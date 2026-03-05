@@ -41,14 +41,14 @@ function ProductViewModal({ open, setOpen, product, isAvailable }) {
                             {image && (
                                 <div className='flex justifiy-center aspect-[3/2] relative'>
                                     <img className='' src={image} alt={productName}></img>
-                                    
+
                                     {isAvailable ? (
-                                            
-                                            <Status text="Em estoque" icon={MdDone} bg='bg-[#3e7b31]' color='text-white' />
-                                        ) : (
-                                            
-                                            <Status text="Indisponível" icon={MdClose} bg='bg-[#ae2f27]' color='text-white' />
-                                        )}
+
+                                        <Status text="Em estoque" icon={MdDone} bg='bg-[#3e7b31]' color='text-white' />
+                                    ) : (
+
+                                        <Status text="Indisponível" icon={MdClose} bg='bg-[#ae2f27]' color='text-white' />
+                                    )}
                                 </div>
 
                             )}
@@ -79,8 +79,7 @@ function ProductViewModal({ open, setOpen, product, isAvailable }) {
                                                 </span>
                                             </div>
                                         )}
-                                        
-                                        
+
                                     </div>
 
                                     <Divider />
