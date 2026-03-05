@@ -25,7 +25,7 @@ const Products = () => {
       quantity: 0,
       price: 2550.0,
       discount: 20.0,
-      specialPrice: 2040.0,
+      //specialPrice: 2040.0,
     }];
 
   return (

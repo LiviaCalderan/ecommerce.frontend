@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { FaCartShopping } from "react-icons/fa6";
+import ProductViewModal from './ProductViewModel';
 
 const ProductCard = ({
     productId,
@@ -51,34 +52,34 @@ const ProductCard = ({
                         discount,
                         specialPrice
                     })
-                }} className='text-x1 font-bold mb-2 line-clamp-2 cursor-pointer'>
+                }} className='text-xl font-bold mb-2 line-clamp-2 cursor-pointer'>
                     {productName}
                 </h2>
 
-                <div className='flex justify-between'>
+                <div className='flex flex-col justify-between'>
                     {specialPrice ? (
                         <div className='flex flex-col'>
                             <span className='text-xs line-through font-medium text-gray-400'>
-                                ${Number(price).toFixed(2)}
+                                {Number(price).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
                             </span>
                             <span className='text-xl font-bold text-slate-700'>
-                                ${Number(specialPrice).toFixed(2)}
+                                {Number(specialPrice).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
                             </span>
                         </div>
                     ) : (
                         <div className='flex flex-col'>
-                            <span className='text-xs line-through font-medium text-gray-400'>
-                                <p> .</p>
+                            <span className='text-xs text-transparent'>
+                                .
                             </span>
-                            <span className='text-lg font-semibold'>
-                                ${Number(price).toFixed(2)}
+                            <span className='text-xl font-bold text-slate-700'>
+                                {Number(price).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
                             </span>
                         </div>
                     )}
 
                     <button
                         disabled={!isAvailable || btnLoader}
-                        onClick={() => { }} className={`text-white font-medium py-2 px-3 rounded-lg items-center transition-colors duration-300 flex justify-center
+                        onClick={() => { }} className={`text-white font-medium py-2 px-3 mt-3 rounded-lg items-center transition-colors duration-300 flex justify-center
                         ${isAvailable ? "bg-[#237a8a]  opacity-100 hover:bg-[#1c616e] cursor-pointer" : "bg-gray-400  "} `}>
                         <FaCartShopping className='mr-2' />
                         {isAvailable ? "Adicionar ao Carrinho" : "Fora de Estoque"}
@@ -86,6 +87,12 @@ const ProductCard = ({
                 </div>
 
             </div>
+
+            <ProductViewModal
+                open={openProductViewModal}
+                setOpen={setOpenProductViewModal}
+                product={selectViewProduct}
+                isAvailable={isAvailable} />
         </div>
     )
 }
