@@ -7,7 +7,7 @@ const ProductCard = ({
     productName,
     image,
     description,
-    quantity,
+    stock,
     price,
     discount,
     specialPrice
@@ -16,7 +16,7 @@ const ProductCard = ({
     const [openProductViewModal, setOpenProductViewModal] = useState(false);
     const btnLoader = false;
     const [selectViewProduct, setSelectViewProduct] = useState();
-    const isAvailable = quantity && Number(quantity) > 0;
+    const isAvailable = stock && Number(stock) > 0;
 
     const handleProductView = (product) => {
         setSelectViewProduct(product);
@@ -31,7 +31,7 @@ const ProductCard = ({
                     productName,
                     image,
                     description,
-                    quantity,
+                    stock,
                     price,
                     discount,
                     specialPrice
@@ -47,7 +47,7 @@ const ProductCard = ({
                         productName,
                         image,
                         description,
-                        quantity,
+                        stock,
                         price,
                         discount,
                         specialPrice
