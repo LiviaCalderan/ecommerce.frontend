@@ -60,10 +60,10 @@ const ProductCard = ({
                     {specialPrice ? (
                         <div className='flex flex-col'>
                             <span className='text-xs line-through font-medium text-gray-400'>
-                                {Number(price).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
+                                {Number(price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                             </span>
                             <span className='text-xl font-bold text-slate-700'>
-                                {Number(specialPrice).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
+                                {Number(specialPrice).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                             </span>
                         </div>
                     ) : (
@@ -72,7 +72,7 @@ const ProductCard = ({
                                 .
                             </span>
                             <span className='text-xl font-bold text-slate-700'>
-                                {Number(price).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}
+                                {Number(price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                             </span>
                         </div>
                     )}
