@@ -2,25 +2,31 @@ import { useEffect } from "react";
 import ProductCard from './ProductCard';
 import { BiSolidError } from "react-icons/bi";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../store/actions';
+import { fetchCategories, fetchProducts } from '../store/actions';
 import Filter from "./Filter";
+import useProductFilter from "./useProductFilter";
 
 const Products = () => {
 
-  const { isLoading, errorMessage } = useSelector((state) => state.errors);
-  const { products } = useSelector((state => state.products));
+  const { isLoading, errorMessage } = useSelector(
+    (state) => state.errors
+  );
+  const { products, categories } = useSelector(
+    (state => state.products)
+  );
   
   const dispatch = useDispatch();
+  useProductFilter();
 
-  useEffect(() => { 
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchCategories())
+  }, [dispatch])
 
   return (
     <div className='lg:px-14 sm:px-8 px-4 py-14 2xl:w-[100%] 2x1:mx-auto'>
-      
-      <Filter />
-      
+
+      <Filter categories={categories ? categories : []}/>
+
       {isLoading ? (
         <p>Loading...</p>
       ) : errorMessage ? (
