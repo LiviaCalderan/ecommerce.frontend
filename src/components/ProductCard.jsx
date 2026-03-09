@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FaCartShopping } from "react-icons/fa6";
 import ProductViewModal from './ProductViewModel';
+import truncateText from './truncateText';
 
 const ProductCard = ({
     productId,
@@ -53,7 +54,7 @@ const ProductCard = ({
                         specialPrice
                     })
                 }} className='text-xl font-bold mb-2 line-clamp-2 cursor-pointer'>
-                    {productName}
+                    {truncateText(productName, 30)}
                 </h2>
 
                 <div className='flex flex-col justify-between'>
