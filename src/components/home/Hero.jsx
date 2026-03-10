@@ -37,9 +37,11 @@ const Hero = () => {
 
                 {bannerList.map((item, i) => (
                     <SwiperSlide key={item.id}>
-                        <div className={`carousel-item rounded-md sm:h-[500px] h-96 ${colors[i]}`}>
+                        <div className={`carousel-item sm:h-[500px] h-96 ${colors[i]}`}>
                             <div className='flex items-center justify-center'>
-                                <div className='hidden lg:flex justify-center w-1/2 p-8'>
+                                
+                                {/* Padrão: tela pequena -> texto escondido (hidden) */}
+                                <div className='hidden lg:flex justify-center w-1/2 p-2'>
                                     <div className='text-center'>
                                         <h3 className='text-3xl text-white font-bold'>
                                             {item.title}

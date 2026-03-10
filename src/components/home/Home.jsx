@@ -20,9 +20,9 @@ const Home = () => {
     }, [dispatch]);
 
     return (
-        <div className='lg:px-[160px] sm:px-[32px]'>
+        <div className='lg:px-[160px] px-[32px]'>
 
-            <div className='py-6'>
+            <div>
                 <Hero />
             </div>
             <div className='py-3'>
