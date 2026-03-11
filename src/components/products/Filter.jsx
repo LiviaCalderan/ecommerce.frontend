@@ -67,7 +67,7 @@ const Filter = ({categories}) => {
     }
 
     return (
-        <div className='flex lg:flex-row flex-col-reverse lg:justify-between justify-center items-center gap-4'>
+        <div className='flex lg:flex-row flex-col-reverse lg:justify-between justify-center items-center gap-4 font-raleway'>
 
             {/* SEARCH BAR */}
 

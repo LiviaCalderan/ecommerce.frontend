@@ -25,7 +25,7 @@ const Products = () => {
   }, [dispatch])
 
   return (
-    <div className='lg:px-[160px] sm:px-[32px] px-4 py-14 2xl:w-[100%] 2x1:mx-auto'>
+    <div className='lg:px-[160px] sm:px-[32px] px-4 py-14 2xl:w-[100%] 2x1:mx-auto font-raleway'>
 
       <Filter categories={categories ? categories : []} />
 

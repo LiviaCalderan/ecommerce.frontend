@@ -29,7 +29,7 @@ function ProductViewModal({ open, setOpen, product, isAvailable }) {
     return (
         <>
 
-            <Dialog open={open} as="div" className="relative z-10 focus:outline-none" onClose={setOpen}>
+            <Dialog open={open} as="div" className="relative z-10 focus:outline-none font-raleway" onClose={setOpen}>
                 <DialogBackdrop className="fixed inset-0 bg-black opacity-30 transition-opacity" />
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                     <div className="flex min-h-full items-center justify-center p-4">
@@ -61,7 +61,7 @@ function ProductViewModal({ open, setOpen, product, isAvailable }) {
                                 <div className='space-y-2 text-gray-700 pb-4 flex flex-col gap-2'>
                                     <div className='flex  items-center justify-between gap-2'>
                                         {specialPrice ? (
-                                            <div className='flex flex-col'>
+                                            <div className='flex flex-col font-sans'>
                                                 <span className='text-xs line-through font-medium text-gray-400'>
                                                     {Number(price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                                                 </span>
@@ -70,7 +70,7 @@ function ProductViewModal({ open, setOpen, product, isAvailable }) {
                                                 </span>
                                             </div>
                                         ) : (
-                                            <div className='flex flex-col'>
+                                            <div className='flex flex-col font-sans'>
                                                 <span className='text-xs text-transparent'>
                                                     .
                                                 </span>
@@ -90,7 +90,7 @@ function ProductViewModal({ open, setOpen, product, isAvailable }) {
                                 <button
                                     disabled={!isAvailable || btnLoader}
                                     onClick={() => { }} className={`text-white font-medium py-2 px-3 mt-3 rounded-lg items-center transition-colors duration-300 flex justify-center
-                                                        ${isAvailable ? "bg-[#237a8a]  opacity-100 hover:bg-[#1c616e] cursor-pointer" : "bg-gray-400  "} `}>
+                                                        ${isAvailable ? "bg-black opacity-100 hover:bg-gray-800 cursor-pointer" : "bg-gray-400  "} `}>
                                     <FaCartShopping className='mr-2' />
                                     {isAvailable ? "Adicionar ao Carrinho" : "Fora de Estoque"}
                                 </button>

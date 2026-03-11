@@ -20,7 +20,7 @@ const Home = () => {
     }, [dispatch]);
 
     return (
-        <div className='lg:px-[160px] px-[32px]'>
+        <div className='lg:px-[160px] px-[32px] font-raleway'>
 
             <div>
                 <Hero />
@@ -49,7 +49,7 @@ const Home = () => {
                     </div>
                 ) : (
                     <div className='pb-6 pt-8 grid 2x1:grid-cols-4 lg:grid-cols-4 sm:grid-cols-2 gap-y-6 gap-x-6'>
-                        {products && products?.slice(0, 8).map((item, i) => <ProductCard key={i} {...item} />)}
+                        {products && products?.slice(0, 4).map((item, i) => <ProductCard key={i} {...item} />)}
                     </div>
                 )}
             </div>

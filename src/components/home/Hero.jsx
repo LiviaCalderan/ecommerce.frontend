@@ -14,61 +14,59 @@ import 'swiper/css/autoplay';
 import { bannerList } from '../../utils';
 import { Link } from 'react-router-dom';
 
-const colors = ["bg-[#FDC200]", "bg-[#FF2C2C]", "bg-[#21AD61]"];
 
 const Hero = () => {
     return (
-        <div className='py-2 rouded-md'>
+        <div className='py-2 rounded-md font-raleway'>
             <Swiper
                 grabCursor={true}
                 autoplay={{
                     delay: 4000,
                     disableOnInteraction: false,
                 }}
-                // pagination={{
-                //     dynamicBullets: false,
-                // }}
                 navigation
-                scrollbar={{
-                    hide: true,
-                }}
+                scrollbar={{ hide: true }}
                 slidesPerView={1}
-                modules={[Pagination, EffectFade, Autoplay, Scrollbar]}>
-
+                modules={[Pagination, EffectFade, Autoplay, Scrollbar]}
+            >
                 {bannerList.map((item, i) => (
                     <SwiperSlide key={item.id}>
-                        <div className={`carousel-item sm:h-[500px] h-96 ${colors[i]}`}>
-                            <div className='flex items-center justify-center'>
-                                
-                                {/* Padrão: tela pequena -> texto escondido (hidden) */}
-                                <div className='hidden lg:flex justify-center w-1/2 p-2'>
-                                    <div className='text-center'>
-                                        <h3 className='text-3xl text-white font-bold'>
-                                            {item.title}
-                                        </h3>
-                                        <h1 className='text-5xl text-white font-bold mt-2'>
-                                            {item.subtitle}
-                                        </h1>
-                                        <p className='text-white font-semibold mt-4'>
-                                            {item.description}
-                                        </p>
+                        <div
+                            className="carousel-item relative flex items-center min-h-[400px] lg:min-h-[500px]"
+                            style={{
+                                backgroundImage: `url(${item?.image})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'top left',
+                                backgroundRepeat: 'no-repeat',
+                            }}
+                        >
+                            {/* Overlay escuro para melhorar leitura do texto */}
+                            <div className="absolute inset-0 bg-black/20" />
 
-                                        {/* Futuramente colocar o link direto para um produto especifico - já no bannerList */}
-                                        <Link className='mt-6 inline-block bg-black text-white py-2 px-4 rounded hover:bg-gray-800 font-semibold'
-                                            to={"/products"}>
-                                            Shop
-                                        </Link>
-                                    </div>
-                                </div>
-                                <div className='w-full flex justify-center lg:w-1/2 p-4'>
-                                    <img src={item?.image} alt="product image" />
+                            {/* Conteúdo sobre o background */}
+                            <div className="relative z-10 flex justify-end w-full px-8 lg:px-20">
+                                <div className="text-center lg:text-end md:text-end max-w-lg">
+                                    <h3 className="lg:text-md md:text-md text-md text-gray-200 font-bold">
+                                        {item.title}
+                                    </h3>
+                                    <h1 className="lg:text-7xl md:text-7xl text-4xl text-white font-bold tracking-[0.03em] mt-2 font-anton-sc">
+                                        {item.subtitle}
+                                    </h1>
+                                    <p className="lg:text-md md:text-md text-sm text-gray-200 font-semibold mt-4">
+                                        {item.description}
+                                    </p>
+                                    <Link
+                                        className="mt-6 inline-block bg-white text-black text-sm py-2 px-15 rounded-md hover:bg-gray-200 font-semibold"
+                                        to="/products"
+                                    >
+                                        Shop Now
+                                    </Link>
                                 </div>
                             </div>
                         </div>
                     </SwiperSlide>
                 ))}
             </Swiper>
-
         </div>
     );
 }

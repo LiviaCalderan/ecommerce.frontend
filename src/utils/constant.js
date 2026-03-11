@@ -1,9 +1,11 @@
-import bannerImageOne from '../assets/sliders/sofa.png'
-import bannerImageTwo from '../assets/sliders/smartTV.png'
-import bannerImageThree from '../assets/sliders/kids.png'
+import bannerImageOne from '../assets/sliders/music.png'
+import bannerImageTwo from '../assets/sliders/golf.png'
+import bannerImageThree from '../assets/sliders/clothing.png'
+import bannerImageFour from '../assets/sliders/book.png'
 
 export {
     bannerImageOne,
     bannerImageTwo,
-    bannerImageThree
+    bannerImageThree,
+    bannerImageFour
 }

@@ -57,3 +57,25 @@ export const fetchCategories = () => async (dispatch) => {
         });
     }
 }
+
+export const addToCart = (data, quantityCart = 1, toast) =>
+     (dispatch, getState) => {
+        // FIND THE PRODUCT
+            const { products } = getState().products;
+            const getProduct = products.find(
+                (item) => item.productId === data.productId
+            );
+
+        //CHECK STOCKS
+        const quantityExist = getProduct.stock >= quantityCart;
+
+        // IF STOCK -> ADD
+        if (quantityExist) {
+            dispatch({ type: "ADD_CART", payload: {...data, quantity: quantityCart}});
+            toast.success(`Added to Cart`);
+            localStorage.setItem("cartItemsStored", JSON.stringify(getState().carts.cart));
+        } else {
+            toast.error(`Failed to Add`);
+        }
+        
+}

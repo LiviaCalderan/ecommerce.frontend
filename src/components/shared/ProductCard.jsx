@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { FaCartShopping } from "react-icons/fa6";
 import ProductViewModal from './ProductViewModel';
 import truncateText from '../../utils/truncateText';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../store/actions';
+import toast from 'react-hot-toast';
 
 const ProductCard = ({
     productId,
@@ -18,11 +21,16 @@ const ProductCard = ({
     const btnLoader = false;
     const [selectViewProduct, setSelectViewProduct] = useState();
     const isAvailable = stock && Number(stock) > 0;
+    const dispatch = useDispatch();
 
     const handleProductView = (product) => {
         setSelectViewProduct(product);
         setOpenProductViewModal(true);
     };
+
+    const addToCartHandler = (cartItems) => {
+        dispatch(addToCart(cartItems, 1, toast));
+    }
 
     return (
         <div className='border-1 border-gray-300 rounded-lg shadow-xl overflow-hidden transition-shadow duration-300'>
@@ -59,7 +67,7 @@ const ProductCard = ({
 
                 <div className='flex flex-col justify-between'>
                     {specialPrice ? (
-                        <div className='flex flex-col'>
+                        <div className='flex flex-col font-sans'>
                             <span className='text-xs line-through font-medium text-gray-400'>
                                 {Number(price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                             </span>
@@ -68,7 +76,7 @@ const ProductCard = ({
                             </span>
                         </div>
                     ) : (
-                        <div className='flex flex-col'>
+                        <div className='flex flex-col font-sans'>
                             <span className='text-xs text-transparent'>
                                 .
                             </span>
@@ -80,8 +88,16 @@ const ProductCard = ({
 
                     <button
                         disabled={!isAvailable || btnLoader}
-                        onClick={() => { }} className={`text-white font-medium py-2 px-3 mt-3 rounded-lg items-center transition-colors duration-300 flex justify-center
-                        ${isAvailable ? "bg-[#237a8a]  opacity-100 hover:bg-[#1c616e] cursor-pointer" : "bg-gray-400  "} `}>
+                        onClick={() => {addToCartHandler({
+                            image,
+                            productName,
+                            description,
+                            specialPrice,
+                            price,
+                            productId,
+                            stock
+                        })}} className={`text-white font-medium py-2 px-3 mt-3 rounded-lg items-center transition-colors duration-300 flex justify-center
+                        ${isAvailable ? "bg-black  opacity-100 hover:bg-gray-800 cursor-pointer" : "bg-gray-400  "} `}>
                         <FaCartShopping className='mr-2' />
                         {isAvailable ? "Adicionar ao Carrinho" : "Fora de Estoque"}
                     </button>
