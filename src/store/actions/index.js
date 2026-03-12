@@ -59,23 +59,64 @@ export const fetchCategories = () => async (dispatch) => {
 }
 
 export const addToCart = (data, quantityCart = 1, toast) =>
-     (dispatch, getState) => {
+    (dispatch, getState) => {
         // FIND THE PRODUCT
-            const { products } = getState().products;
-            const getProduct = products.find(
-                (item) => item.productId === data.productId
-            );
+        const { products } = getState().products;
+        const getProduct = products.find(
+            (item) => item.productId === data.productId
+        );
 
         //CHECK STOCKS
         const quantityExist = getProduct.stock >= quantityCart;
 
         // IF STOCK -> ADD
         if (quantityExist) {
-            dispatch({ type: "ADD_CART", payload: {...data, quantity: quantityCart}});
+            dispatch({ type: "ADD_CART", payload: { ...data, quantity: quantityCart } });
             toast.success(`Added to Cart`);
             localStorage.setItem("cartItemsStored", JSON.stringify(getState().carts.cart));
         } else {
             toast.error(`Failed to Add`);
         }
-        
+
+    }
+
+export const increaseCartQuantity = (data, toast, currentQuantity, setCurrentQuantity) => (dispatch, getState) => {
+    // FIND THE PRODUCT
+    const { products } = getState().products;
+    const getProduct = products.find(
+        (item) => item.productId === data.productId
+    );
+
+    const availableStock = getProduct?.stock ?? Number.POSITIVE_INFINITY;
+    const quantityExist = availableStock >= currentQuantity + 1;
+
+    if (quantityExist) {
+        const newQuantity = currentQuantity + 1;
+        setCurrentQuantity(newQuantity);
+
+        dispatch({
+            type: 'UPDATE_CART_QUANTITY',
+            payload: { productId: data.productId, quantity: newQuantity }
+        });
+        localStorage.setItem("cartItemsStored", JSON.stringify(getState().carts.cart));
+    } else {
+        toast.error("Quantity Reached to Limit");
+    }
+}
+
+export const decreaseCartQuantity = (data, newQuantity) => (dispatch, getState) => {
+    dispatch({
+        type: 'UPDATE_CART_QUANTITY',
+        payload: { productId: data.productId, quantity: newQuantity }
+    });
+    localStorage.setItem("cartItemsStored", JSON.stringify(getState().carts.cart));
+}
+
+export const removeFromCart = (data, toast) => (dispatch, getState) => {
+    dispatch({
+        type: 'REMOVE_CART_ITEM',
+        payload: data
+    });
+    toast.success("Successfully removed!")
+    localStorage.setItem("cartItemsStored", JSON.stringify(getState().carts.cart));
 }

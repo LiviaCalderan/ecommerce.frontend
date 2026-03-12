@@ -12,9 +12,9 @@ export const cartReducer = (state = initialState, action) => {
                 (item) => item.productId === productToAdd.productId
             );
 
-            if(existingProduct) {
+            if (existingProduct) {
                 const updatedCart = state.cart.map((item) => {
-                    if(item.productId === productToAdd.productId) {
+                    if (item.productId === productToAdd.productId) {
                         return {
                             ...item,
                             quantity: item.quantity + productToAdd.quantity
@@ -35,7 +35,26 @@ export const cartReducer = (state = initialState, action) => {
                     cart: newCart
                 }
             }
-        
+        case "UPDATE_CART_QUANTITY":
+            return {
+                ...state,
+                cart: state.cart.map((item) => {
+                    if (item.productId === action.payload.productId) {
+                        return {
+                            ...item,
+                            quantity: action.payload.quantity
+                        };
+                    }
+                    return item;
+                })
+            };
+        case "REMOVE_CART_ITEM":
+            return {
+                ...state,
+                cart: state.cart.filter(
+                    (item)=> item.productId !== action.payload.productId
+                )
+            }
         default:
             return state;
     }

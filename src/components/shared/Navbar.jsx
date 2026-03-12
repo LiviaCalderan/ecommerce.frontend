@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { FiGlobe, FiShoppingBag, FiUser, FiHome, FiInfo, FiPackage, FiMail, FiX, FiMenu, FiLogIn, FiLogOut } from "react-icons/fi";
 import { Badge } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
     const path = useLocation().pathname;
     const [navbarOpen, setNavbarOpen] = useState(false);
     const isUserLogged = true;
     const cartCount = 0;
+    const { cart } = useSelector((state) => state.carts)
 
     useEffect(() => {
         setNavbarOpen(false);
@@ -45,7 +47,7 @@ const Navbar = () => {
                 <ul>
                     <li className='flex items-center justify-center gap-3'>
                         <Link to={"/cart"} className='pr-2'>
-                            <Badge badgeContent={cartCount} color="primary" max={99} showZero>
+                            <Badge badgeContent={cart?.length || 0 } color="primary" max={99} showZero>
                                 <FiShoppingBag size={20} className='transition-transform duration-100 transform hover:scale-105' />
                             </Badge>
                         </Link>
@@ -80,7 +82,7 @@ const Navbar = () => {
 
                 
                 <Link to={"/cart"} className='pr-2'>
-                    <Badge badgeContent={cartCount} color="primary" max={99} showZero>
+                    <Badge badgeContent={cart?.length || 0 } color="primary" max={99} showZero>
                         <FiShoppingBag size={20} className='transition-transform duration-100 transform hover:scale-105' />
                     </Badge>
                 </Link>
