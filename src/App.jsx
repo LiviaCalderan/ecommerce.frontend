@@ -8,6 +8,8 @@ import Contact from './components/contact/contact'
 import { Toaster } from 'react-hot-toast'
 import React from 'react'
 import Cart from './components/cart/Cart'
+import Login from './components/auth/Login'
+import SignUp from './components/auth/SignUp'
 
 function App() {
 
@@ -21,6 +23,8 @@ function App() {
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/cart' element={<Cart />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<SignUp />} />
         </Routes>
       </BrowserRouter>
       <Toaster position='bottom-right' />
