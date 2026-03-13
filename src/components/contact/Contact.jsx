@@ -2,12 +2,12 @@ import React from 'react'
 
 const Contact = () => {
     return (
-        <div className="bg-white px-6 py-24 sm:py-32 lg:px-8 font-raleway">
+        <div className="bg-white px-6 py-24 sm:py-7 min-h-[calc(100vh-64px)] lg:px-8 font-raleway">
             <div className="mx-auto max-w-2xl text-center">
                 <h2 className="text-4xl font-semibold tracking-wider text-black sm:text-5xl font-anton-sc">Contact Us</h2>
                 <p className="mt-2 text-lg/8 text-gray-800">Aute magna irure deserunt veniam aliqua magna enim voluptate.</p>
             </div>
-            <form action="#" method="POST" className="mx-auto mt-16 max-w-xl sm:mt-20">
+            <form action="#" method="POST" className="mx-auto mt-10 max-w-xl sm:mt-10">
                 <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                     <div>
                         <label htmlFor="first-name" className="block text-sm/6 font-semibold text-black">

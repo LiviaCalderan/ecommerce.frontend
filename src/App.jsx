@@ -24,7 +24,7 @@ function App() {
           <Route path='/contact' element={<Contact />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/signup' element={<SignUp />} />
+          <Route path='/register' element={<SignUp />} />
         </Routes>
       </BrowserRouter>
       <Toaster position='bottom-right' />

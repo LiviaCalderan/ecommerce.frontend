@@ -6,7 +6,7 @@ import { IoCartOutline } from "react-icons/io5";
 
 const CartEmpty = () => {
     return (
-        <div className=" lg:px-40 px-4 sm:px-8 py-16 font-raleway bg-gray-100 h-screen">
+        <div className=" lg:px-40 px-4 sm:px-8 py-16 font-raleway bg-gray-100 min-h-[calc(100vh-64px)]">
             <div className='rounded-md border border-gray-300 bg-white overflow-hidden shadow-md p-8 lg:py-10'>
                 <div className='flex flex-col items-center gap-4 justify-center'>
                     <span className='font-bold'>Ops...</span>
