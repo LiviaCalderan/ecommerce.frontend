@@ -33,24 +33,9 @@ const ProductCard = ({
     }
 
     return (
-        <div className='border-1 border-gray-300 rounded-lg shadow-xl overflow-hidden transition-shadow duration-300'>
-            <div onClick={() => {
-                handleProductView({
-                    id: productId,
-                    productName,
-                    image,
-                    description,
-                    stock,
-                    price,
-                    discount,
-                    specialPrice
-                })
-            }}
-                className='w-full overflow-hidden aspect-3/2'>
-                <img className='w-full h-full cursor-pointer transition-transform duration-300 transform hover:scale-105' src={image} alt={productName}></img>
-            </div>
-            <div className='p-4'>
-                <h2 onClick={() => {
+        <div className='group bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden transition-shadow duration-300 hover:shadow-md h-full flex flex-col'>
+            <div
+                onClick={() => {
                     handleProductView({
                         id: productId,
                         productName,
@@ -61,34 +46,58 @@ const ProductCard = ({
                         discount,
                         specialPrice
                     })
-                }} className='text-xl font-bold mb-2 line-clamp-2 cursor-pointer'>
-                    {truncateText(productName, 30)}
+                }}
+                className='w-full overflow-hidden aspect-[4/3] bg-zinc-100 cursor-pointer'
+            >
+                <img
+                    className='w-full h-full object-cover transition-transform duration-300 transform group-hover:scale-105'
+                    src={image}
+                    alt={productName}
+                />
+            </div>
+            <div className='p-4 flex flex-col flex-1'>
+                <h2
+                    onClick={() => {
+                        handleProductView({
+                            id: productId,
+                            productName,
+                            image,
+                            description,
+                            stock,
+                            price,
+                            discount,
+                            specialPrice
+                        })
+                    }}
+                    className='text-sm font-semibold text-zinc-900 leading-snug line-clamp-2 cursor-pointer'
+                >
+                    {truncateText(productName, 34)}
                 </h2>
 
-                <div className='flex flex-col justify-between'>
+                <div className='mt-2 flex-1'>
                     {specialPrice ? (
                         <div className='flex flex-col font-sans'>
                             <span className='text-xs line-through font-medium text-gray-400'>
                                 {Number(price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                             </span>
-                            <span className='text-xl font-bold text-slate-700'>
+                            <span className='text-lg font-semibold text-zinc-900'>
                                 {Number(specialPrice).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                             </span>
                         </div>
                     ) : (
                         <div className='flex flex-col font-sans'>
-                            <span className='text-xs text-transparent'>
-                                .
-                            </span>
-                            <span className='text-xl font-bold text-slate-700'>
+                            <span className='text-xs text-transparent'>.</span>
+                            <span className='text-lg font-semibold text-zinc-900'>
                                 {Number(price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                             </span>
                         </div>
                     )}
+                </div>
 
-                    <button
-                        disabled={!isAvailable || btnLoader}
-                        onClick={() => {addToCartHandler({
+                <button
+                    disabled={!isAvailable || btnLoader}
+                    onClick={() => {
+                        addToCartHandler({
                             image,
                             productName,
                             description,
@@ -96,13 +105,14 @@ const ProductCard = ({
                             price,
                             productId,
                             stock
-                        })}} className={`text-white font-medium py-2 px-3 mt-3 rounded-lg items-center transition-colors duration-300 flex justify-center
-                        ${isAvailable ? "bg-black  opacity-100 hover:bg-gray-800 cursor-pointer" : "bg-gray-400  "} `}>
-                        <FaCartShopping className='mr-2' />
-                        {isAvailable ? "Adicionar ao Carrinho" : "Fora de Estoque"}
-                    </button>
-                </div>
-
+                        })
+                    }}
+                    className={`mt-4 w-full text-white text-xs font-bold uppercase tracking-widest py-2.5 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2
+                        ${isAvailable ? "bg-black hover:bg-gray-800 cursor-pointer" : "bg-gray-400"}`}
+                >
+                    <FaCartShopping className='text-sm' />
+                    {isAvailable ? "Adicionar ao Carrinho" : "Fora de Estoque"}
+                </button>
             </div>
 
             <ProductViewModal

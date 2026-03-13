@@ -25,32 +25,49 @@ const Products = () => {
   }, [dispatch])
 
   return (
-    <div className='lg:px-[160px] sm:px-[32px] px-4 py-14 2xl:w-[100%] 2x1:mx-auto font-raleway'>
+    <div className='bg-gray-100'>
+      <div className='lg:px-[160px] sm:px-[32px] px-4 py-14 font-raleway'>
 
-      <Filter categories={categories ? categories : []} />
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold uppercase tracking-widest text-black font-anton-sc">
+            Products
+          </h1>
+          <p className="text-sm text-zinc-500 font-medium mt-1.5">
+            Explore our curated selection of essentials and statement pieces.
+          </p>
+        </div>
 
-      {isLoading ? (
-        <Loader />
-      ) : errorMessage ? (
-        <div className='flex justifiy-center items-center h-[200px]'>
-          <BiSolidError className='text-slate-800 text-3xl mr-2' />
-          <span className='text-slate-800 text-lg font-medium'>
-            {errorMessage}
-          </span>
+        {/* Filters */}
+        <div className="bg-white border border-zinc-200 rounded-md shadow-sm p-4 sm:p-5">
+          <Filter categories={categories ? categories : []} />
         </div>
-      ) : (
-        <div className='min-h-[700px]'>
-          <div className='pb-6 pt-14 grid 2x1:grid-cols-4 lg:grid-cols-5 sm:grid-cols-2 gap-y-6 gap-x-6'>
-            {products && products.map((item, i) => <ProductCard key={i} {...item} />)}
+
+        {isLoading ? (
+          <div className="mt-10">
+            <Loader />
           </div>
-          <div>
-            <Paginations
-              numberOfPage={pagination?.totalPages}
-              totalProducts={pagination?.totalElements}
-            />
+        ) : errorMessage ? (
+          <div className='flex justify-center items-center h-[200px]'>
+            <BiSolidError className='text-slate-800 text-3xl mr-2' />
+            <span className='text-slate-800 text-lg font-medium'>
+              {errorMessage}
+            </span>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className='min-h-[700px]'>
+            <div className='pt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
+              {products && products.map((item, i) => <ProductCard key={i} {...item} />)}
+            </div>
+            <div className="mt-10">
+              <Paginations
+                numberOfPage={pagination?.totalPages}
+                totalProducts={pagination?.totalElements}
+              />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

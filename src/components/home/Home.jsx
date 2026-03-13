@@ -6,6 +6,8 @@ import ProductCard from '../shared/ProductCard';
 import { Link } from 'react-router-dom';
 import { FiArrowRight } from "react-icons/fi";
 import Loader from '../shared/Loader';
+import { SiNike, SiSony, SiAdidas, SiSamsung, SiZara } from "react-icons/si";
+import { TbBrandAppleFilled } from "react-icons/tb";
 
 const Home = () => {
     const dispatch = useDispatch();
@@ -15,6 +17,16 @@ const Home = () => {
         (state) => state.errors
     );
 
+    const brands = [
+        { name: "NIKE", symbol: <SiNike /> },
+        { name: "SONY", symbol: <SiSony /> },
+        { name: "APPLE", symbol: <TbBrandAppleFilled /> },
+        { name: "ADIDAS", symbol: <SiAdidas /> },
+        { name: "SAMSUNG", symbol: <SiSamsung /> },
+        { name: "ZARA", symbol: <SiZara /> },
+
+    ];
+
     useEffect(() => {
         dispatch(fetchProducts())
     }, [dispatch]);
@@ -22,12 +34,19 @@ const Home = () => {
     return (
         <div className='lg:px-[160px] px-[32px] font-raleway'>
 
-            <div>
+            <div className=''>
                 <Hero />
             </div>
-            <div className='py-3'>
+
+            <div className="flex flex-wrap justify-between px-8 py-3 text-4xl text-white bg-black rounded-lg mt-2 ">
+                {brands.slice(0, 6).map(b => (
+                    <span>{b.symbol}</span>
+                ))}
+            </div>
+
+            <div className='py-5'>
                 <div className='flex items-center justify-between'>
-                    <h1 className='text-slate-700 text-2xl font-bold'>
+                    <h1 className='text-black text-2xl font-bold'>
                         <span>New Arrivals</span>
                     </h1>
                     <Link className='flex justify-center items-center gap-1 font-semibold underline'

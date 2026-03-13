@@ -3,6 +3,7 @@ import Background from '../../assets/bg-auth.png'
 import { FcGoogle } from "react-icons/fc";
 import { Link } from 'react-router-dom';
 import { CiUser } from "react-icons/ci";
+import { FiGlobe } from 'react-icons/fi';
 
 const SignUp = () => {
     return (
@@ -16,7 +17,7 @@ const SignUp = () => {
 
                         {/* Heading */}
                         <h2 className="text-3xl font-bold uppercase tracking-widest text-zinc-900 font-anton-sc">
-                            Sign up
+                            Register Here
                         </h2>
                         <p className="text-sm text-zinc-400 font-medium mt-1.5">
                             Create your account to get started.
@@ -205,8 +206,9 @@ const SignUp = () => {
                     />
                     {/* Overlay com branding */}
                     <div className="absolute inset-0 bg-zinc-900/60 flex flex-col justify-end p-12">
-                        <p className="text-[10px] uppercase tracking-widest text-white font-bold mb-2">
+                        <p className="flex items-center gap-1 text-[10px] uppercase tracking-widest text-white font-bold mb-2">
                             Orbis
+                            <FiGlobe />
                         </p>
                         <h2 className="text-4xl font-bold uppercase tracking-widest text-white font-anton-sc leading-tight">
                             Your journey into a world of refined shopping begins here.

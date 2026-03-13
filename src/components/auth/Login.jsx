@@ -2,6 +2,7 @@ import React from 'react'
 import Background from '../../assets/bg-auth.png'
 import { FcGoogle } from "react-icons/fc";
 import { Link } from 'react-router-dom';
+import { FiGlobe } from "react-icons/fi";
 
 
 const Login = () => {
@@ -18,8 +19,9 @@ const Login = () => {
                     />
                     {/* Overlay com branding */}
                     <div className="absolute inset-0 bg-zinc-900/60 flex flex-col justify-end p-12">
-                        <p className="text-[10px] uppercase tracking-widest text-white font-bold mb-2">
+                        <p className="flex items-center gap-1 text-[10px] uppercase tracking-widest text-white font-bold mb-2">
                             Orbis
+                            <FiGlobe />
                         </p>
                         <h2 className="text-4xl font-bold uppercase tracking-widest text-white font-anton-sc leading-tight">
                             Where exceptional products meet an exceptional shopping experience.
@@ -117,9 +119,9 @@ const Login = () => {
                                 />
                                 <span className="text-xs text-zinc-400 font-medium">Remember me</span>
                             </label>
-                            <a href="#" className="text-xs text-zinc-400 font-medium underline underline-offset-2">
+                            <Link to={"/password"} className="text-xs text-zinc-400 font-medium underline underline-offset-2">
                                 Forgot password?
-                            </a>
+                            </Link>
                         </div>
 
                         {/* Submit */}
