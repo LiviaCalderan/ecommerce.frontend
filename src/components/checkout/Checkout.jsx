@@ -2,16 +2,17 @@ import React, { useState } from 'react'
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import Step2Address from './steps/Step2Address';
 
 
 const Checkout = () => {
 
     const [activeSet, setActiveSet] = useState(0);
     const steps = [
-        { id: 1, label: "Identification" },
+        { id: 1, label: "Info" },
         { id: 2, label: "Address"},
         { id: 3, label: "Payment Method"},
-        { id: 4, label: "Order Summary" },
+        { id: 4, label: "Review" },
         { id: 5, label: "Payment"},
     ]
 
@@ -24,6 +25,11 @@ const Checkout = () => {
                     </Step>
                     ))}
             </Stepper>
+
+            <div className='mt-10'>
+                {activeSet === 0 && <Step2Address /> }
+                
+            </div>
         </div>
     )
 }
