@@ -1,12 +1,15 @@
 import { Avatar, Box, Button, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
 import React, { useState } from 'react'
 import { FiLogOut, FiUser, FiBox } from 'react-icons/fi';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import BackDrop from './BackDrop';
+import { logOutUser } from '../../store/actions';
 
 const UserMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const open = Boolean(anchorEl);
 
     const { user } = useSelector((state) => state.auth);
@@ -19,7 +22,7 @@ const UserMenu = () => {
     };
 
     const logoutHandler = () => {
-
+        dispatch(logOutUser(navigate));
     };
 
     return (

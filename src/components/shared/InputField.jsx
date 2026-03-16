@@ -12,7 +12,8 @@ const InputField = ({
     min,
     value,
     placeholder,
-    icon
+    icon,
+    validation
 }) => {
     return (
         <div className='flex flex-col gap-1.5'>
@@ -32,7 +33,7 @@ const InputField = ({
                         } bg-transparent text-sm text-zinc-900 placeholder:text-zinc-400 outline-none w-full h-full`}
                     {...register(id, {
                         required: { value: required, message },
-                        minLenght: min
+                        minLength: min
                             ? { value: min, message: `Minimum ${min} characters is required` }
                             : null,
                         pattern: type === "email" ? {
@@ -41,7 +42,9 @@ const InputField = ({
                         } : type === "url" ? {
                             value: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
                             message: "Please enter a valid url"
-                        } : null
+                        } : null,
+
+                        ...validation
                     })}
 
                 />

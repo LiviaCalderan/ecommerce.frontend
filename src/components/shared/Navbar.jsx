@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { FiGlobe, FiShoppingBag, FiBox, FiHome, FiInfo, FiPackage, FiMail, FiX, FiMenu, FiLogIn, FiLogOut } from "react-icons/fi";
 import { Badge } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import UserMenu from '../shared/UserMenu';
+import { logOutUser } from '../../store/actions';
 
 const Navbar = () => {
     const path = useLocation().pathname;
     const [navbarOpen, setNavbarOpen] = useState(false);
-    const cartCount = 0;
     const { cart } = useSelector((state) => state.carts);
 
     const { user } = useSelector((state) => state.auth);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const logoutHandler = () => {
+        dispatch(logOutUser(navigate));
+    };
 
 
     useEffect(() => {
@@ -170,7 +177,7 @@ const Navbar = () => {
                     {user && user.id ? (
                         <Link
                             to={'/account'}
-                            onClick={() => setNavbarOpen(false)}
+                            onClick={logoutHandler}
                             className='flex items-center gap-3 px-4 py-3 rounded-xl font-raleway text-[15px] font-semibold text-slate-600 hover:bg-gray-100 hover:text-black transition-all duration-150'
                         >
                             <FiLogOut size={18} />
