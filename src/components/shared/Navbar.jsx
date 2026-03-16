@@ -176,7 +176,6 @@ const Navbar = () => {
                 <div className='px-4 pb-6 pt-2 border-t border-gray-100'>
                     {user && user.id ? (
                         <Link
-                            to={'/account'}
                             onClick={logoutHandler}
                             className='flex items-center gap-3 px-4 py-3 rounded-xl font-raleway text-[15px] font-semibold text-slate-600 hover:bg-gray-100 hover:text-black transition-all duration-150'
                         >

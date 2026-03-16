@@ -9,6 +9,8 @@ import { CiUser } from "react-icons/ci";
 import { useDispatch } from 'react-redux';
 import { authenticateSignInUser } from '../../store/actions';
 import toast from 'react-hot-toast';
+import { Oval } from 'react-loader-spinner';
+import Spinners from '../shared/Spinners';
 
 
 const Login = () => {
@@ -132,7 +134,7 @@ const Login = () => {
                             className="w-full mt-6 py-3.5 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest rounded-xl cursor-pointer hover:bg-gray-800 hover:shadow-sm"
                         >
                             {loader ? (
-                                <>Loading...</>
+                                < Spinners />
                             ) : (
                                 <>Sign in</>
                             )}

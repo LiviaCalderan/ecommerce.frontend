@@ -8,6 +8,7 @@ import InputField from '../shared/InputField';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { registerNewUser } from '../../store/actions';
+import Spinners from '../shared/Spinners';
 
 const SignUp = () => {
 
@@ -169,7 +170,7 @@ const SignUp = () => {
                             className="w-full mt-6 py-3.5 bg-zinc-900 text-white text-xs font-bold uppercase tracking-widest rounded-xl cursor-pointer hover:bg-gray-800 hover:shadow-sm"
                         >
                             {loader ? (
-                                <>Loading...</>
+                                <Spinners />
                             ) : (
                                 <>Register</>
                             )}
