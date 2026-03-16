@@ -62,19 +62,19 @@ const Login = () => {
                         </p>
 
                         {/* TODO: GOOGLE Login*/}
-                        <button
+                        {/* <button
                             className="w-full mt-8 border border-zinc-200 bg-zinc-50 flex items-center justify-center gap-2.5 h-11 rounded-xl text-sm font-medium text-zinc-600 cursor-pointer hover:bg-black hover:text-white hover:font-semibold hover:shadow-sm"
                         >
                             <FcGoogle size={20} />
                             Continue with Google
-                        </button>
+                        </button> */}
 
                         {/* DIVIDER */}
                         <div className="flex items-center gap-3 my-6">
                             <div className="flex-1 h-px bg-zinc-100" />
-                            <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">
+                            {/* <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">
                                 or
-                            </span>
+                            </span> */}
                             <div className="flex-1 h-px bg-zinc-100" />
                         </div>
 

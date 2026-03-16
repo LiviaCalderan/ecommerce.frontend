@@ -32,7 +32,7 @@ const Home = () => {
     }, [dispatch]);
 
     return (
-        <div className='lg:px-[160px] px-[32px] font-raleway'>
+        <div className='lg:px-40 px-8 font-raleway'>
 
             <div className=''>
                 <Hero />

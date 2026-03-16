@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { FiGlobe, FiShoppingBag, FiUser, FiHome, FiInfo, FiPackage, FiMail, FiX, FiMenu, FiLogIn, FiLogOut } from "react-icons/fi";
+import { FiGlobe, FiShoppingBag, FiBox, FiHome, FiInfo, FiPackage, FiMail, FiX, FiMenu, FiLogIn, FiLogOut } from "react-icons/fi";
 import { Badge } from '@mui/material';
 import { useSelector } from 'react-redux';
+import UserMenu from '../shared/UserMenu';
 
 const Navbar = () => {
     const path = useLocation().pathname;
     const [navbarOpen, setNavbarOpen] = useState(false);
-    const isUserLogged = false;
     const cartCount = 0;
-    const { cart } = useSelector((state) => state.carts)
+    const { cart } = useSelector((state) => state.carts);
+
+    const { user } = useSelector((state) => state.auth);
+
 
     useEffect(() => {
         setNavbarOpen(false);
@@ -26,7 +29,7 @@ const Navbar = () => {
     return (
         <div>
             {/* DESKTOP NAVBAR  */}
-            <div className='hidden md:flex items-center justify-between lg:px-[160px] px-[32px] h-[60px] z-50'>
+            <div className='hidden md:flex items-center justify-between lg:px-40 px-8 h-15 z-50'>
                 <Link to={"/"} className='flex justify-center items-center gap-2'>
                     <FiGlobe size={22} />
                     <span className='text-2xl font-anton-sc'>ORB1S.</span>
@@ -51,9 +54,9 @@ const Navbar = () => {
                                 <FiShoppingBag size={20} className='transition-transform duration-100 transform hover:scale-105' />
                             </Badge>
                         </Link>
-                        {isUserLogged ? (
+                        {user && user.id ? (
                             <div className='flex'>
-                                <Link to={'/account'} className='flex items-center gap-2 font-raleway text-[15px] font-semibold justify-center pr-2'>
+                                {/* <Link to={'/account'} className='flex items-center gap-2 font-raleway text-[15px] font-semibold justify-center pr-2'>
                                     <FiUser size={20} className='transition-transform duration-100 transform hover:scale-105' />
                                 </Link>
                                 <Link
@@ -63,7 +66,8 @@ const Navbar = () => {
                                 >
                                     <FiLogOut size={18} />
                                     Sign Out
-                                </Link>
+                                </Link> */}
+                                <UserMenu />
                             </div>
 
                         ) : (
@@ -147,33 +151,23 @@ const Navbar = () => {
 
 
                     <Link
-                        to={"/cart"}
+                        to={"/order"}
                         onClick={() => setNavbarOpen(false)}
-                        className={`flex items-center gap-3 px-4 py-3 rounded-xl font-raleway text-[15px] font-semibold transition-all duration-150 ${path === "/cart"
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl font-raleway text-[15px] font-semibold transition-all duration-150 ${path === "/order"
                             ? 'bg-black text-white'
                             : 'text-slate-600 hover:bg-gray-100 hover:text-black'
                             }`}
                     >
                         <div className='relative'>
-                            <FiShoppingBag size={18} />
-                            {cartCount > 0 && (
-                                <span className='absolute -top-2 -right-2 bg-blue-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center'>
-                                    {cartCount}
-                                </span>
-                            )}
+                            <FiBox size={18} />
                         </div>
-                        Cart
-                        {cartCount > 0 && (
-                            <span className='ml-auto bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-full'>
-                                {cartCount}
-                            </span>
-                        )}
+                        Orders
                     </Link>
                 </nav>
 
 
                 <div className='px-4 pb-6 pt-2 border-t border-gray-100'>
-                    {isUserLogged ? (
+                    {user && user.id ? (
                         <Link
                             to={'/account'}
                             onClick={() => setNavbarOpen(false)}

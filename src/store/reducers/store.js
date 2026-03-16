@@ -9,7 +9,8 @@ const user = localStorage.getItem("auth") ? JSON.parse(localStorage.getItem("aut
 const cartItemsStored = localStorage.getItem("cartItemsStored") ? JSON.parse(localStorage.getItem("cartItemsStored")) : [];
 
 const initialState = {
-    carts: {cart: cartItemsStored}
+    carts: { cart: cartItemsStored },
+    auth: { user: user }
 }
 
 export const store = configureStore({

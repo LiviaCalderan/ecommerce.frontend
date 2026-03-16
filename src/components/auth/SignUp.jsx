@@ -7,7 +7,7 @@ import { FiGlobe } from 'react-icons/fi';
 
 const SignUp = () => {
     return (
-        <div className='bg-gray-100 min-h-screen flex items-center justify-center px-6'>
+        <div className='bg-gray-100 min-h-[calc(100vh-64px)] flex items-center justify-center px-6'>
             <div className="w-full max-w-5xl flex flex-col md:flex-row font-raleway bg-white rounded-2xl shadow-md overflow-hidden">
 
                 {/* Form */}
@@ -24,20 +24,20 @@ const SignUp = () => {
                         </p>
 
                         {/* Google */}
-                        <button
+                        {/* <button
                             type="button"
                             className="w-full mt-8 border border-zinc-200 bg-zinc-50 flex items-center justify-center gap-2.5 h-11 rounded-xl text-sm font-medium text-zinc-600 cursor-pointer hover:bg-black hover:text-white hover:font-semibold hover:shadow-sm"
                         >
                             <FcGoogle size={20} />
                             Continue with Google
-                        </button>
+                        </button> */}
 
                         {/* Divider */}
                         <div className="flex items-center gap-3 my-6">
                             <div className="flex-1 h-px bg-zinc-100" />
-                            <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">
+                            {/* <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-semibold">
                                 or
-                            </span>
+                            </span> */}
                             <div className="flex-1 h-px bg-zinc-100" />
                         </div>
 
