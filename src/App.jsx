@@ -12,6 +12,7 @@ import Login from './components/auth/Login'
 import SignUp from './components/auth/SignUp'
 import PrivateRoute from './components/shared/PrivateRoute'
 import Profile from './components/auth/Profile'
+import Checkout from './components/checkout/Checkout'
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
           <Route path='/cart' element={<Cart />} />
           <Route path='/register' element={<SignUp />} />
           <Route path='/profile' element={<Profile />} />
+          <Route path='/checkout' element={<Checkout />} />
 
           <Route path='/' element={<PrivateRoute publicPage />}>
             <Route path='/login' element={<Login />} />
