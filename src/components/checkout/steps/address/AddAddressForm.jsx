@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
-import InputField from '../shared/InputField';
-import Spinners from '../shared/Spinners';
+import React, { useEffect, useState } from 'react'
+import InputField from '../../../shared/InputField';
+import Spinners from '../../../shared/Spinners';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUpdateUserAddress } from '../../store/actions';
+import { addUpdateUserAddress } from '../../../../store/actions';
 import toast from 'react-hot-toast';
 
 const AddAddressForm = ({ address, setOpenAddressModel }) => {
 
     const dispatch = useDispatch();
-    const { register, handleSubmit, reset, formState: { errors }, } = useForm({ mode: "onTouched" });
+    const { register, handleSubmit, reset, setValue, formState: { errors }, } = useForm({ mode: "onTouched" });
     const { btnLoader } = useSelector((state) => state.errors);
+    
     const onSaveAddressHandler = async (data) => {
         dispatch(addUpdateUserAddress(
             data,
@@ -20,6 +21,18 @@ const AddAddressForm = ({ address, setOpenAddressModel }) => {
         ))
     }
 
+    useEffect(() => {
+        if(address?.addressId) {
+            setValue("buildingName", address?.buildingName);
+            setValue("city", address?.city);
+            setValue("state", address?.state);
+            setValue("number", address?.number);
+            setValue("street", address?.street);
+            setValue("country", address?.country);
+            setValue("pincode", address?.pincode);
+        }
+    }, [address]);
+
     return (
         <div className="w-full flex flex-col items-center justify-center py-5">
 
@@ -28,7 +41,8 @@ const AddAddressForm = ({ address, setOpenAddressModel }) => {
                 className="w-full max-w-sm flex flex-col">
 
                 <h2 className="text-3xl font-bold uppercase tracking-widest text-zinc-900 font-anton-sc">
-                    Add your Address
+                    {!address?.addressId ? "Add your Address" : "Update your Address"}
+                    
                 </h2>
 
                 {/* DIVIDER */}
@@ -128,7 +142,7 @@ const AddAddressForm = ({ address, setOpenAddressModel }) => {
                     {btnLoader ? (
                         < Spinners />
                     ) : (
-                        <>Add New Address</>
+                        <>{!address.addressId ? "Add New Address" : "Update"}</>
                     )}
 
                 </button>

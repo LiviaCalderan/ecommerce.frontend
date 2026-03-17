@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import Step2Address from './steps/Step2Address';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAddresses } from '../../store/actions';
+import AddressInfo from './steps/address/AddressInfo';
 
 
 const Checkout = () => {
@@ -38,7 +38,7 @@ const Checkout = () => {
             </Stepper>
 
             <div className='mt-10'>
-                {activeSet === 0 && <Step2Address address={address} />}
+                {activeSet === 0 && <AddressInfo address={address} />}
 
             </div>
         </div>

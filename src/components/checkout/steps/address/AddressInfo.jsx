@@ -1,12 +1,15 @@
 import Skeleton from '@mui/material/Skeleton';
 import React, { useState } from 'react'
 import { FaMap } from "react-icons/fa";
-import AddressInfoModel from '../../address/AddressInfoModel';
-import AddAddressForm from '../../address/AddAddressForm';
-import { useSelector } from 'react-redux';
-import AddressList from '../../address/AddressList';
+import AddAddressForm from './AddAddressForm';
+import { useDispatch, useSelector } from 'react-redux';
+import AddressInfoModel from './AddressInfoModel';
+import AddressList from './AddressList';
+import DeleteModel from './DeleteModel';
+import toast from 'react-hot-toast';
+import { deleteUserAddress } from '../../../../store/actions';
 
-const Step2Address = ({ address }) => {
+const AddressInfo = ({ address }) => {
 
     const noAddressExist = !address || address.length === 0;
     const { isLoading, btnLoader } = useSelector(
@@ -14,10 +17,21 @@ const Step2Address = ({ address }) => {
     );
 
     const [openAddressModel, setOpenAddressModel] = useState(false);
+    const [openDeleteModel, setOpenDeleteModel] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState("");
+
     const addNewAddressHandler = () => {
         setSelectedAddress("");
         setOpenAddressModel(true);
+    }
+
+    const dispatch = useDispatch();
+    const deleteAddressHandler = () => {
+        dispatch(deleteUserAddress(
+            toast,
+            selectedAddress?.addressId,
+            setOpenDeleteModel
+        ))
     }
 
     return (
@@ -58,7 +72,8 @@ const Step2Address = ({ address }) => {
                                 <AddressList
                                     addresses={address}
                                     setSelectedAddress={setSelectedAddress}
-                                    openAddressModel={openAddressModel}
+                                    setOpenAddressModel={setOpenAddressModel}
+                                    setOpenDeleteModel={setOpenDeleteModel}
                                 />
                             </div>
 
@@ -71,8 +86,10 @@ const Step2Address = ({ address }) => {
             <AddressInfoModel open={openAddressModel} setOpen={setOpenAddressModel}>
                 <AddAddressForm address={selectedAddress} setOpenAddressModel={setOpenAddressModel} />
             </AddressInfoModel>
+
+            <DeleteModel open={openDeleteModel} loader={btnLoader} setOpen={setOpenDeleteModel} title="Delete Address" onDeleteHandler={deleteAddressHandler}/>
         </div>
     )
 }
 
-export default Step2Address
+export default AddressInfo

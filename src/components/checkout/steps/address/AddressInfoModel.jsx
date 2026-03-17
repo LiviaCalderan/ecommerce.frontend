@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import React from 'react'
-import BackDrop from '../shared/BackDrop'
+import BackDrop from '../../../shared/BackDrop'
 import { FaTimes } from 'react-icons/fa'
 
 const AddressInfoModel = ({ open, setOpen, children }) => {

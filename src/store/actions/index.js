@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import api from "../../api/api"
 
 export const fetchProducts = (queryString) => async (dispatch) => {
@@ -166,13 +167,19 @@ export const addUpdateUserAddress = (sendData, toast, addressId, setOpenAddressM
     // const { user } = getState().auth;
     dispatch({ type: "BUTTON_LOADER" })
     try {
-        const { data } = await api.post("/addresses", sendData);
+        if (!addressId) {
+            const { data } = await api.post("/addresses", sendData);
+        } else {
+            await api.put(`/addresses/${addressId}`, sendData);
+        }
+        dispatch(getUserAddresses());
         toast.success("Address saved successfully!");
-        dispatch({type: "IS_SUCCESS" })
+        dispatch({ type: "IS_SUCCESS" })
+
     } catch (error) {
         console.log(error);
         toast.error(error?.response?.data.message || "Internal Server Error")
-        dispatch({type: "IS_ERROR", payload: null})
+        dispatch({ type: "IS_ERROR", payload: null })
     } finally {
         setOpenAddressModel(false);
     }
@@ -199,9 +206,36 @@ export const getUserAddresses = () => async (dispatch, getState) => {
         });
     }
 }
+
 export const selectCheckoutAddress = (address) => {
     return {
-        type: "SELECT_CHECKOUT_ADDRESS", 
+        type: "SELECT_CHECKOUT_ADDRESS",
         payload: address,
     }
-} 
+}
+
+export const deleteUserAddress =
+    (toast, addressId, setOpenDeleteModal) => async (dispatch, getState) => {
+        try {
+            dispatch({ type: "BUTTON_LOADER" });
+            await api.delete(`/addresses/${addressId}`);
+            dispatch({ type: "IS_SUCCESS" })
+            dispatch(getUserAddresses());
+            dispatch(clearCheckoutAddress);
+            toast.success("Address deleted successfully!");
+        } catch (error) {
+            console.log(error);
+            dispatch({
+                type: "IS_ERROR",
+                payload: error?.response?.data?.message || "Some Error Occured",
+            });
+        } finally {
+            setOpenDeleteModal(false);
+        }
+    }
+
+export const clearCheckoutAddress = () => {
+    return {
+        type: "REMOVE_CHECKOUT_ADDRESS", 
+    }
+};

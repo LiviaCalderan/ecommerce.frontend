@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
-import { FaCheckCircle, FaEdit, FaMapPin, FaPlus, FaTrashAlt } from 'react-icons/fa';
+import { FaCheckCircle, FaEdit, FaMapPin, FaTrashAlt } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdLocationCity } from "react-icons/md";
 import { FaMapLocation } from "react-icons/fa6";
 import { GrStreetView } from "react-icons/gr";
-import { selectCheckoutAddress } from '../../store/actions';
+import { selectCheckoutAddress } from '../../../../store/actions';
 
-const AddressList = ({ addresses, setSelectedAddress, setOpenAddressModel }) => {
+const AddressList = ({ addresses, setSelectedAddress, setOpenAddressModel, setOpenDeleteModel }) => {
 
     const dispatch = useDispatch();
     const selectedCheckoutAddress = useSelector(
@@ -18,10 +17,13 @@ const AddressList = ({ addresses, setSelectedAddress, setOpenAddressModel }) => 
     };
 
     const onEditButtonHandler = (addresses) => {
-
+        setSelectedAddress(addresses);
+        setOpenAddressModel(true);
     };
 
     const onDeleteButtonHandler = (addresses) => {
+        setSelectedAddress(addresses);
+        setOpenDeleteModel(true);
 
     };
 
@@ -64,16 +66,16 @@ const AddressList = ({ addresses, setSelectedAddress, setOpenAddressModel }) => 
                                     {/* Action Buttons */}
                                     <div className="flex items-center gap-2">
                                         <button
-                                            className={`p-2 rounded-xl transition-all duration-200 bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-black`}
+                                            className={`p-2 rounded-xl transition-all duration-200 bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-black cursor-pointer`}
                                             title="Edit address"
-                                            onClick={onEditButtonHandler(address)}
+                                            onClick={() => onEditButtonHandler(address)}
                                         >
                                             <FaEdit size={14} />
                                         </button>
                                         <button
-                                            className={`p-2 rounded-xl transition-all duration-200 bg-gray-100 hover:bg-red-50 text-gray-500 hover:text-red-500`}
+                                            className={`p-2 rounded-xl transition-all duration-200 bg-gray-100 hover:bg-red-50 text-gray-500 hover:text-red-500 cursor-pointer `}
                                             title="Delete address"
-                                            onClick={onDeleteButtonHandler(address)}
+                                            onClick={() => onDeleteButtonHandler(address)}
                                         >
                                             <FaTrashAlt size={13} />
                                         </button>
