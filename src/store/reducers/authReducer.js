@@ -1,6 +1,6 @@
 const initialState = {
   user: null,
-  address: [],
+  address: null,
   selectedUserCheckoutAddress: null
 }
 

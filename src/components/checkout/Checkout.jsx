@@ -5,15 +5,39 @@ import StepLabel from '@mui/material/StepLabel';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserAddresses } from '../../store/actions';
 import AddressInfo from './steps/address/AddressInfo';
+import Button from '@mui/material/Button';
+import toast from 'react-hot-toast';
 
 
 const Checkout = () => {
 
-    const [activeSet, setActiveSet] = useState(0);
+    const [activeStep, setActiveStep] = useState(0);
     const dispatch = useDispatch();
-    const { address } = useSelector(
+    const { address, selectedUserCheckoutAddress } = useSelector(
         (state) => state.auth
     )
+
+    const { isLoading, errorMessage } = useSelector(
+        (state) => state.errors
+    )
+
+    const handleBack = () => {
+        setActiveStep((prevStep) => prevStep - 1);
+    }
+
+    const handleNext = () => {
+        if (activeStep === 0 && !selectedUserCheckoutAddress) {
+           toast.error("Please, select a delivery address before proceeding.")
+           return;
+        }
+        if (activeStep === 0 && !selectedUserCheckoutAddress || !paymentMethod) {
+           toast.error("Please, select a payment method before proceeding.")
+           return;
+        }
+        setActiveStep((prevStep) => prevStep + 1);
+    }
+
+    const paymentMethod = false;
 
     const steps = [
         // { id: 1, label: "Info" },
@@ -29,7 +53,7 @@ const Checkout = () => {
 
     return (
         <div className='lg:px-16 px-8 py-14 min-h-[calc(100vh-64px)] font-raleway'>
-            <Stepper activeStep={activeSet} alternativeLabel>
+            <Stepper activeStep={activeStep} alternativeLabel>
                 {steps.map((step, i) => (
                     <Step key={step.id}>
                         <StepLabel>{step.label}</StepLabel>
@@ -38,9 +62,43 @@ const Checkout = () => {
             </Stepper>
 
             <div className='mt-10'>
-                {activeSet === 0 && <AddressInfo address={address} />}
+                {activeStep === 0 && <AddressInfo address={address} />}
+            </div>
+
+            <div className='flex justify-between items-center px-16 md:px-40 fixed z-50 h-24 bottom-0 bg-white left-0 w-full py-4 border-slate-200'
+                style={{ boxShadow: "0 -2px 4px rgba(100, 100, 100,0.15)" }}>
+                <button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    className={`bg-black font-semibold font-raleway px-6 h-10 rounded-md text-white
+                       ${activeStep === 0 ? "opacity-30" : "cursor-pointer"}`}
+                >
+                    Back
+                </button>
+
+                {activeStep !== steps.length - 1 && (
+                    <button
+                        disabled={
+                            errorMessage || (
+                                (activeStep === 0 ? !selectedUserCheckoutAddress
+                                    : activeStep === 1 ? !paymentMethod
+                                        : false
+                                )
+                            )
+                        } className={`bg-black font-semibold font-raleway px-6 h-10 rounded-md text-white
+                       ${errorMessage ||
+                                (activeStep === 0 && !selectedUserCheckoutAddress) ||
+                                (activeStep === 1 && !paymentMethod)
+                                ? "opacity-30"
+                                : "cursor-pointer"
+                            }`}
+                        onClick={handleNext}>
+                        Proceed
+                    </button>
+                )}
 
             </div>
+
         </div>
     )
 }
