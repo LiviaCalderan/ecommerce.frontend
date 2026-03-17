@@ -8,6 +8,7 @@ import AddressInfo from './steps/address/AddressInfo';
 import Button from '@mui/material/Button';
 import toast from 'react-hot-toast';
 import Skeleton from '@mui/material/Skeleton';
+import ErrorPage from '../shared/ErrorPage';
 
 
 const Checkout = () => {
@@ -107,6 +108,8 @@ const Checkout = () => {
                 )}
 
             </div>
+
+            {errorMessage && <ErrorPage message={errorMessage}/>}
 
         </div>
     )
