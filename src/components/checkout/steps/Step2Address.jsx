@@ -3,11 +3,15 @@ import React, { useState } from 'react'
 import { FaMap } from "react-icons/fa";
 import AddressInfoModel from '../../address/AddressInfoModel';
 import AddAddressForm from '../../address/AddAddressForm';
+import { useSelector } from 'react-redux';
+import AddressList from '../../address/AddressList';
 
-const Step2Address = () => {
+const Step2Address = ({ address }) => {
 
-    const noAddressExist = true;
-    const isLoading = false;
+    const noAddressExist = !address || address.length === 0;
+    const { isLoading, btnLoader } = useSelector(
+        (state) => state.errors
+    );
 
     const [openAddressModel, setOpenAddressModel] = useState(false);
     const [selectedAddress, setSelectedAddress] = useState("");
@@ -34,24 +38,38 @@ const Step2Address = () => {
                 </div>
 
             ) : (
-                <div className='relative p-6 rounded-lg max-w-md mx-auto'>
+                <div className='relative p-6 rounded-lg w-full max-w-3xl mx-auto'>
                     {isLoading ? (
                         <div className='flex flex-col gap-2 items-center'>
-                            <Skeleton variant='rounded' width={500} height={135} animation="wave" />
-                            <Skeleton variant='rounded' width={500} height={135} animation="wave" />
-                            <Skeleton variant='rounded' width={500} height={135} animation="wave" />
+                            <Skeleton variant='rounded' width="100%" height={135} animation="wave" />
+                            <Skeleton variant='rounded' width="100%" height={135} animation="wave" />
+                            <Skeleton variant='rounded' width="100%" height={135} animation="wave" />
 
                         </div>
                     ) : (
-                        <div className='space-y-4 pt-6'>
-                            <p>Address List here...</p>
+                        <div className='relative'>
+
+                            {address.length > 0 && (
+                                <button onClick={addNewAddressHandler} className='md:absolute right-0 top-8 text-white md:text-md text-sm font-semibold py-2 px-15 mt-3 rounded-lg text-center transition-colors duration-300 flex justify-center bg-black opacity-100 hover:bg-gray-800 cursor-pointer hover:shadow-sm'>
+                                    Add More
+                                </button>
+                            )}
+                            <div className='space-y-4 pt-6'>
+                                <AddressList
+                                    addresses={address}
+                                    setSelectedAddress={setSelectedAddress}
+                                    openAddressModel={openAddressModel}
+                                />
+                            </div>
+
+
                         </div>
                     )}
                 </div>
             )}
 
             <AddressInfoModel open={openAddressModel} setOpen={setOpenAddressModel}>
-                <AddAddressForm address={selectedAddress} setOpenAddressModel={setOpenAddressModel}/>
+                <AddAddressForm address={selectedAddress} setOpenAddressModel={setOpenAddressModel} />
             </AddressInfoModel>
         </div>
     )
