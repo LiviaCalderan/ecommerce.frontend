@@ -51,7 +51,7 @@ const Step2Address = () => {
             )}
 
             <AddressInfoModel open={openAddressModel} setOpen={setOpenAddressModel}>
-                <AddAddressForm/>
+                <AddAddressForm address={selectedAddress} setOpenAddressModel={setOpenAddressModel}/>
             </AddressInfoModel>
         </div>
     )

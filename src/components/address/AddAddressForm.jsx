@@ -2,14 +2,22 @@ import React, { useState } from 'react'
 import InputField from '../shared/InputField';
 import Spinners from '../shared/Spinners';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUpdateUserAddress } from '../../store/actions';
+import toast from 'react-hot-toast';
 
-const AddAddressForm = () => {
+const AddAddressForm = ({ address, setOpenAddressModel }) => {
 
+    const dispatch = useDispatch();
     const { register, handleSubmit, reset, formState: { errors }, } = useForm({ mode: "onTouched" });
     const { btnLoader } = useSelector((state) => state.errors);
     const onSaveAddressHandler = async (data) => {
-        console.log("address click")
+        dispatch(addUpdateUserAddress(
+            data,
+            toast,
+            address?.addressId,
+            setOpenAddressModel
+        ))
     }
 
     return (
@@ -102,14 +110,12 @@ const AddAddressForm = () => {
 
                     <InputField
                         label="Complement"
-                        id="complement"
+                        id="buildingName"
                         type="text"
                         register={register}
-                        placeholder="Apartment"
+                        placeholder="Apartment, suite, block..."
                         errors={errors}
                     />
-
-
 
                 </div>
 

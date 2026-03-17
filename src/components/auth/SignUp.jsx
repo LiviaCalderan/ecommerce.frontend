@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { registerNewUser } from '../../store/actions';
 import Spinners from '../shared/Spinners';
+import toast from 'react-hot-toast';
 
 const SignUp = () => {
 

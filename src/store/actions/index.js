@@ -132,8 +132,8 @@ export const authenticateSignInUser = (sendData, toast, reset, navigate, setLoad
         navigate("/");
 
     } catch (error) {
-       console.log(error);
-       toast.error(error?.response?.data.message || "Internal Server Error" )
+        console.log(error);
+        toast.error(error?.response?.data.message || "Internal Server Error")
     } finally {
         setLoader(false);
     }
@@ -148,15 +148,54 @@ export const registerNewUser = (sendData, toast, reset, navigate, setLoader) => 
         navigate("/login");
 
     } catch (error) {
-       console.log(error);
-       toast.error(error?.response?.data.message || "Internal Server Error" )
+        console.log(error);
+        toast.error(error?.response?.data.message || "Internal Server Error")
     } finally {
         setLoader(false);
     }
 }
 
 export const logOutUser = (navigate) => (dispatch) => {
-    dispatch({type: "LOG_OUT"})
+    dispatch({ type: "LOG_OUT" })
     localStorage.removeItem("auth");
     navigate("/login");
+}
+
+export const addUpdateUserAddress = (sendData, toast, addressId, setOpenAddressModel) => async (dispatch, getState) => {
+
+    // const { user } = getState().auth;
+    dispatch({ type: "BUTTON_LOADER" })
+    try {
+        const { data } = await api.post("/addresses", sendData);
+        toast.success("Address saved successfully!");
+        dispatch({type: "IS_SUCCESS" })
+    } catch (error) {
+        console.log(error);
+        toast.error(error?.response?.data.message || "Internal Server Error")
+        dispatch({type: "IS_ERROR", payload: null})
+    } finally {
+        setOpenAddressModel(false);
+    }
+}
+
+export const getUserAddresses = () => async (dispatch, getState) => {
+    try {
+        dispatch({ type: "IS_FETCHING" });
+        const { data } = await api.get(`/addresses`)
+
+        dispatch({
+            type: "USER_ADDRESS",
+            payload: data
+        });
+
+        dispatch({
+            type: "IS_SUCCESS"
+        });
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: "IS_ERROR",
+            payload: error?.response?.data?.message || "Failed to fetch user addresses",
+        });
+    }
 }
