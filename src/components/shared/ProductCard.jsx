@@ -3,8 +3,8 @@ import { FaCartShopping } from "react-icons/fa6";
 import ProductViewModal from './ProductViewModel';
 import truncateText from '../../utils/truncateText';
 import { useDispatch } from 'react-redux';
-import { addToCart } from '../../store/actions';
 import toast from 'react-hot-toast';
+import { addProductToCart } from '../../store/actions';
 
 const ProductCard = ({
     productId,
@@ -18,7 +18,7 @@ const ProductCard = ({
 }) => {
 
     const [openProductViewModal, setOpenProductViewModal] = useState(false);
-    const btnLoader = false;
+    const [btnLoader, setBtnLoader] = useState(false);
     const [selectViewProduct, setSelectViewProduct] = useState();
     const isAvailable = stock && Number(stock) > 0;
     const dispatch = useDispatch();
@@ -28,8 +28,8 @@ const ProductCard = ({
         setOpenProductViewModal(true);
     };
 
-    const addToCartHandler = (cartItems) => {
-        dispatch(addToCart(cartItems, 1, toast));
+    const addToCartHandler = () => {
+        dispatch(addProductToCart(productId, 1, toast, setBtnLoader));
     }
 
     return (
@@ -96,17 +96,7 @@ const ProductCard = ({
 
                 <button
                     disabled={!isAvailable || btnLoader}
-                    onClick={() => {
-                        addToCartHandler({
-                            image,
-                            productName,
-                            description,
-                            specialPrice,
-                            price,
-                            productId,
-                            stock
-                        })
-                    }}
+                    onClick={addToCartHandler}
                     className={`mt-4 w-full text-white text-xs font-bold uppercase tracking-widest py-2.5 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2
                         ${isAvailable ? "bg-black hover:bg-gray-800 cursor-pointer" : "bg-gray-400"}`}
                 >

@@ -54,72 +54,96 @@ export const fetchCategories = () => async (dispatch) => {
         console.log(error);
         dispatch({
             type: "IS_ERROR",
-            payload: error?.response?.data?.message || "Failed to fetch categories",
+            payload: error?.response?.data?.message || "Failed to fetch categories.",
         });
     }
 }
 
-export const addToCart = (data, quantityCart = 1, toast) =>
-    (dispatch, getState) => {
-        // FIND THE PRODUCT
-        const { products } = getState().products;
-        const getProduct = products.find(
-            (item) => item.productId === data.productId
-        );
+export const fetchCart = () => async (dispatch) => {
+    try {
+        dispatch({
+            type: "IS_FETCHING"
+        });
+        const { data } = await api.get("/carts/users/cart");
+        dispatch({
+            type: "SET_CART",
+            payload: data
+        })
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: "IS_ERROR",
+            payload: error?.response?.data?.message || "Failed to fetch user cart.",
+        });
+    }
+}
 
-        //CHECK STOCKS
-        const quantityExist = getProduct.stock >= quantityCart;
+export const addProductToCart = (productId, quantityCart = 1, toast, setLoader) =>
+    async (dispatch) => {
 
-        // IF STOCK -> ADD
-        if (quantityExist) {
-            dispatch({ type: "ADD_CART", payload: { ...data, quantity: quantityCart } });
-            toast.success(`Added to Cart`);
-            localStorage.setItem("cartItemsStored", JSON.stringify(getState().carts.cart));
-        } else {
-            toast.error(`Failed to Add`);
+        try {
+            setLoader(true);
+            const response = await api.post(`/carts/products/${productId}/quantity/${quantityCart}`)
+            dispatch({
+                type: "SET_CART",
+                payload: response.data
+            })
+            toast.success("Product Added to Cart")
+
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.message || "Failed to Add")
+
+        } finally {
+            setLoader(false);
         }
 
+
     }
 
-export const increaseCartQuantity = (data, toast, currentQuantity, setCurrentQuantity) => (dispatch, getState) => {
-    // FIND THE PRODUCT
-    const { products } = getState().products;
-    const getProduct = products.find(
-        (item) => item.productId === data.productId
-    );
+export const increaseCartQuantity = (productId, toast) => async (dispatch) => {
 
-    const availableStock = getProduct?.stock ?? Number.POSITIVE_INFINITY;
-    const quantityExist = availableStock >= currentQuantity + 1;
-
-    if (quantityExist) {
-        const newQuantity = currentQuantity + 1;
-        setCurrentQuantity(newQuantity);
+    try {
+        const { data } = await api.put(`/cart/products/${productId}/quantity/1`);
 
         dispatch({
-            type: 'UPDATE_CART_QUANTITY',
-            payload: { productId: data.productId, quantity: newQuantity }
+            type: "SET_CART",
+            payload: data
         });
-        localStorage.setItem("cartItemsStored", JSON.stringify(getState().carts.cart));
-    } else {
-        toast.error("Quantity Reached to Limit");
+
+    } catch (error) {
+        toast.error("Error increasing quantity");
     }
+
 }
 
-export const decreaseCartQuantity = (data, newQuantity) => (dispatch, getState) => {
-    dispatch({
-        type: 'UPDATE_CART_QUANTITY',
-        payload: { productId: data.productId, quantity: newQuantity }
-    });
-    localStorage.setItem("cartItemsStored", JSON.stringify(getState().carts.cart));
+export const decreaseCartQuantity = (productId, toast) => async (dispatch) => {
+    try {
+        const { data } = await api.put(`/cart/products/${productId}/quantity/delete`);
+
+        dispatch({
+            type: "SET_CART",
+            payload: data
+        });
+
+    } catch (error) {
+        toast.error("Error decreasing quantity");
+    }
+
 }
 
-export const removeFromCart = (data, toast) => (dispatch, getState) => {
+export const removeFromCart = (productId, toast) => async (dispatch) => {
+    try {
+        const response = await api.delete(`/cart/product/${productId}`)
+    
     dispatch({
         type: 'REMOVE_CART_ITEM',
-        payload: data
+        payload: response.data
     });
     toast.success("Successfully removed!")
-    localStorage.setItem("cartItemsStored", JSON.stringify(getState().carts.cart));
+    } catch (error) {
+        toast.error("Error removing item.")
+    }
 }
 
 export const authenticateSignInUser = (sendData, toast, reset, navigate, setLoader) => async (dispatch) => {

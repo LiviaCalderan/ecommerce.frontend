@@ -17,7 +17,6 @@ const SetQuantity = ({
       )}
       <div className='flex flex-row items-center lg:text-[22px] text-sm'>
         <button
-          disabled={quantity <= 1}
           onClick={handleQtyDecrease}>
           <CiCircleMinus size={30} className={btnStyles} />
         </button>

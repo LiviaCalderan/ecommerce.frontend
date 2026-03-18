@@ -18,33 +18,28 @@ const ItemContent = ({
     cartId
 }) => {
 
-    const [currentQuantity, setCurrentQuantity] = useState(quantity);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        setCurrentQuantity(quantity);
-    }, [quantity]);
 
-    const handleQtyIncrease = (cartItems) => {
+    const handleQtyIncrease = () => {
         dispatch(increaseCartQuantity(
-            cartItems,
-            toast,
-            currentQuantity,
-            setCurrentQuantity
+            productId,
+            toast
         ));
     }
 
-    const handleQtyDecrease = (cartItems) => {
-        if (currentQuantity >= 1) {
-            const newQuantity = currentQuantity - 1;
-            setCurrentQuantity(newQuantity);
-            dispatch(decreaseCartQuantity(cartItems, newQuantity));
+    const handleQtyDecrease = () => {
+
+        if (quantity <= 1) {
+            dispatch(removeFromCart(productId, toast));
+        } else {
+            dispatch(decreaseCartQuantity(productId, toast));
         }
 
     }
 
-    const removeItemFromCart = (cartItems) => {
-        dispatch(removeFromCart(cartItems, toast))
+    const removeItemFromCart = (productId) => {
+        dispatch(removeFromCart(productId, toast))
     }
 
     return (
@@ -79,43 +74,19 @@ const ItemContent = ({
                     <div className="flex items-center justify-between mt-1 font-sans">
                         <span className="text-xs text-zinc-500">
                             <SetQuantity
-                                quantity={currentQuantity}
+                                quantity={quantity}
                                 cardCounter={true}
-                                handleQtyIncrease={() => handleQtyIncrease({
-                                    image,
-                                    productName,
-                                    description,
-                                    specialPrice,
-                                    price,
-                                    productId,
-                                    quantity
-                                })}
-                                handleQtyDecrease={() => handleQtyDecrease({
-                                    image,
-                                    productName,
-                                    description,
-                                    specialPrice,
-                                    price,
-                                    productId,
-                                    quantity
-                                })} />
+                                handleQtyIncrease={handleQtyIncrease}
+                                handleQtyDecrease={handleQtyDecrease} />
                         </span>
                         <span className="text-sm font-semibold text-zinc-900">
-                            {Number(currentQuantity * Number(specialPrice)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                            {Number(quantity * Number(specialPrice)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                         </span>
                     </div>
 
                     {/* REMOVE */}
                     <button
-                        onClick={() => removeItemFromCart({
-                            image,
-                            productName,
-                            description,
-                            specialPrice,
-                            price,
-                            productId,
-                            quantity
-                        })}
+                        onClick={() => removeItemFromCart(productId)}
                         className="flex items-center gap-1.5 text-xs font-medium text-rose-800 border border-rose-800 rounded-lg px-2.5 py-1 w-fit cursor-pointer hover:bg-rose-700 hover:text-white mt-1"
                     >
                         <HiOutlineTrash size={13} />
@@ -137,15 +108,7 @@ const ItemContent = ({
                             {productName}
                         </h3>
                         <button
-                            onClick={() => removeItemFromCart({
-                                image,
-                                productName,
-                                description,
-                                specialPrice,
-                                price,
-                                productId,
-                                quantity
-                            })}
+                            onClick={() => removeItemFromCart(productId)}
                             className="flex items-center gap-1.5 text-xs font-medium text-rose-800 border border-rose-800 rounded-lg px-2.5 py-1 w-fit cursor-pointer hover:bg-rose-700 hover:text-white"
                         >
                             <HiOutlineTrash size={13} />
@@ -169,32 +132,16 @@ const ItemContent = ({
                 {/* QUANTITY */}
                 <div className="justify-self-center font-sans">
                     <SetQuantity
-                        quantity={currentQuantity}
+                        quantity={quantity}
                         cardCounter={true}
-                        handleQtyIncrease={() => handleQtyIncrease({
-                            image,
-                            productName,
-                            description,
-                            specialPrice,
-                            price,
-                            productId,
-                            quantity
-                        })}
-                        handleQtyDecrease={() => handleQtyDecrease({
-                            image,
-                            productName,
-                            description,
-                            specialPrice,
-                            price,
-                            productId,
-                            quantity
-                        })} />
+                        handleQtyIncrease={handleQtyIncrease}
+                        handleQtyDecrease={handleQtyDecrease} />
                 </div>
 
                 {/* TOTAL */}
                 <div className="justify-self-center font-sans">
                     <span className="text-sm font-semibold text-zinc-900">
-                        {Number(currentQuantity * Number(specialPrice)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                        {Number(quantity * Number(specialPrice)).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                     </span>
                 </div>
 

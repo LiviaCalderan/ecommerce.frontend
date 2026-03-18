@@ -4,7 +4,7 @@ import { FiGlobe, FiShoppingBag, FiBox, FiHome, FiInfo, FiPackage, FiMail, FiX, 
 import { Badge } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import UserMenu from '../shared/UserMenu';
-import { logOutUser } from '../../store/actions';
+import { fetchCart, logOutUser } from '../../store/actions';
 
 const Navbar = () => {
     const path = useLocation().pathname;
@@ -20,10 +20,18 @@ const Navbar = () => {
         dispatch(logOutUser(navigate));
     };
 
+    const totalItems = cart?.products?.reduce(
+        (total, item) => total + item.quantity,
+        0
+    ) || 0;
 
     useEffect(() => {
         setNavbarOpen(false);
     }, [path]);
+
+    useEffect(() => {
+        dispatch(fetchCart());
+    }, [dispatch]);
 
 
     const navLinks = [
@@ -57,23 +65,12 @@ const Navbar = () => {
                 <ul>
                     <li className='flex items-center justify-center gap-3'>
                         <Link to={"/cart"} className='pr-2'>
-                            <Badge badgeContent={cart?.length || 0} color="primary" max={99} showZero>
+                            <Badge badgeContent={totalItems} color="primary" max={99} showZero>
                                 <FiShoppingBag size={20} className='transition-transform duration-100 transform hover:scale-105' />
                             </Badge>
                         </Link>
                         {user && user.id ? (
                             <div className='flex'>
-                                {/* <Link to={'/account'} className='flex items-center gap-2 font-raleway text-[15px] font-semibold justify-center pr-2'>
-                                    <FiUser size={20} className='transition-transform duration-100 transform hover:scale-105' />
-                                </Link>
-                                <Link
-                                    to={'/login'}
-                                    onClick={() => setNavbarOpen(false)}
-                                    className='flex items-center gap-3 px-4 py-3 rounded-xl font-raleway text-[15px] font-semibold text-slate-600 hover:bg-gray-100 hover:text-black transition-all duration-150'
-                                >
-                                    <FiLogOut size={18} />
-                                    Sign Out
-                                </Link> */}
                                 <UserMenu />
                             </div>
 
@@ -110,7 +107,7 @@ const Navbar = () => {
 
 
                 <Link to={"/cart"} className='pr-2'>
-                    <Badge badgeContent={cart?.length || 0} color="primary" max={99} showZero>
+                    <Badge badgeContent={totalItems} color="primary" max={99} showZero>
                         <FiShoppingBag size={20} className='transition-transform duration-100 transform hover:scale-105' />
                     </Badge>
                 </Link>
