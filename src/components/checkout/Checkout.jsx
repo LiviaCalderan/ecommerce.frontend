@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import toast from 'react-hot-toast';
 import Skeleton from '@mui/material/Skeleton';
 import ErrorPage from '../shared/ErrorPage';
+import PaymentMethod from './steps/paymentMethod/PaymentMethod';
 
 
 const Checkout = () => {
@@ -32,7 +33,7 @@ const Checkout = () => {
             toast.error("Please, select a delivery address before proceeding.")
             return;
         }
-        if (activeStep === 0 && !selectedUserCheckoutAddress || !paymentMethod) {
+        if (activeStep === 1 && !paymentMethod) {
             toast.error("Please, select a payment method before proceeding.")
             return;
         }
@@ -71,6 +72,7 @@ const Checkout = () => {
             ) : (
                 <div className='mt-10'>
                     {activeStep === 0 && <AddressInfo address={address} />}
+                    {activeStep === 1 && <PaymentMethod />}
                 </div>
             )}
 

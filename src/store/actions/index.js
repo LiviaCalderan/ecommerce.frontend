@@ -216,7 +216,7 @@ export const selectCheckoutAddress = (address) => {
 
 export const clearCheckoutAddress = () => {
     return {
-        type: "REMOVE_CHECKOUT_ADDRESS", 
+        type: "REMOVE_CHECKOUT_ADDRESS",
     }
 };
 
@@ -239,5 +239,12 @@ export const deleteUserAddress =
             setOpenDeleteModal(false);
         }
     }
+
+export const selectedPaymentMethod = (method) => {
+    return {
+        type: "ADD_PAYMENT_METHOD",
+        payload: method
+    }
+}
 
 

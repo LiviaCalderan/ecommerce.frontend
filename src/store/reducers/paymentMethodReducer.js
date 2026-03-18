@@ -1,21 +1,13 @@
 const initialState = {
-    paymentMethod: null,
+    paymentMethod: "Stripe",
 };
 
 export const paymentMethodReducer = (state = initialState, action) => {
     switch (action.type) {
-        case "":
+        case "ADD_PAYMENT_METHOD":
             return {
                 ...state,
-                products: action.payload,
-                pagination: {
-                    ...state.pagination,
-                    pageNumber: action.pageNumber,
-                    pageSize: action.pageSize,
-                    totalElements: action.totalElements,
-                    totalPages: action.totalPages,
-                    lastPage: action.lastPage,
-                },
+                paymentMethod: action.payload
             };
     
         default:
