@@ -17,10 +17,8 @@ const PaymentMethod = () => {
     }
 
     const methods = [
-        { value: 'Stripe', label: 'Stripe', description: 'Credit and debit cards', icon: FiCreditCard },
+        { value: 'Stripe', label: 'Stripe', description: 'Credit and debit cards, Google Pay, Pix or Boleto', icon: FiCreditCard },
         { value: 'Paypal', label: 'PayPal', description: 'Pay with your PayPal balance', icon: FiDollarSign },
-        { value: 'Pix', label: 'Pix', description: 'Instant payment - Brazil', icon: FiZap },
-        { value: 'Boleto', label: 'Boleto', description: 'Pay at any bank or lottery', icon: FiFileText },
     ]
 
     return (

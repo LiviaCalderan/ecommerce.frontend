@@ -13,8 +13,6 @@ import PaymentMethod from './steps/paymentMethod/PaymentMethod';
 import OrderSummary from './steps/order/OrderSummary';
 import StripePayment from './steps/payment/StripePayment';
 import PaypalPayment from './steps/payment/PaypalPayment';
-import PixPayment from './steps/payment/PixPayment';
-import BoletoPayment from './steps/payment/BoletoPayment';
 
 
 const Checkout = () => {
@@ -93,12 +91,8 @@ const Checkout = () => {
                     {activeStep === 3 && <>
                         {paymentMethod === "Stripe" ? (
                             <StripePayment />
-                        ) : paymentMethod === "Paypal" ? (
-                            <PaypalPayment />
-                        ) : paymentMethod === "Pix" ? (
-                            <PixPayment />
                         ) : (
-                            <BoletoPayment />
+                            <PaypalPayment />
                         )
                         }</>}
                 </div>

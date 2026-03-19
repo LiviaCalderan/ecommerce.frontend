@@ -7,8 +7,10 @@ import { paymentMethodReducer } from "./paymentMethodReducer";
 
 const user = localStorage.getItem("auth") ? JSON.parse(localStorage.getItem("auth")) : null;
 
+const selectedUserCheckoutAddress = localStorage.getItem("CHECKOUT_ADDRESS") ? JSON.parse(localStorage.getItem("CHECKOUT_ADDRESS")) : [];
+
 const initialState = {
-    auth: { user: user }
+    auth: { user: user, selectedUserCheckoutAddress }
 }
 
 export const store = configureStore({

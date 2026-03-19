@@ -13,12 +13,22 @@ export const cartReducer = (state = initialState, action) => {
                 ...state,
                 cart: action.payload
             }
-        
+
         case "REMOVE_CART_ITEM":
             if (!action.payload || !action.payload.cartId) return state;
             return {
                 ...state,
                 cart: action.payload
+            }
+            
+        case "CLEAR_CART":
+            return {
+                ...state,
+                cart: {
+                    products: [],
+                    totalPrice: 0,
+                    cartId: null
+                }
             }
         default:
             return state;
