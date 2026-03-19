@@ -11,6 +11,10 @@ import Skeleton from '@mui/material/Skeleton';
 import ErrorPage from '../shared/ErrorPage';
 import PaymentMethod from './steps/paymentMethod/PaymentMethod';
 import OrderSummary from './steps/order/OrderSummary';
+import StripePayment from './steps/payment/StripePayment';
+import PaypalPayment from './steps/payment/PaypalPayment';
+import PixPayment from './steps/payment/PixPayment';
+import BoletoPayment from './steps/payment/BoletoPayment';
 
 
 const Checkout = () => {
@@ -86,6 +90,17 @@ const Checkout = () => {
                         cart={cart}
                         address={selectedUserCheckoutAddress}
                         paymentMethod={paymentMethod} />}
+                    {activeStep === 3 && <>
+                        {paymentMethod === "Stripe" ? (
+                            <StripePayment />
+                        ) : paymentMethod === "Paypal" ? (
+                            <PaypalPayment />
+                        ) : paymentMethod === "Pix" ? (
+                            <PixPayment />
+                        ) : (
+                            <BoletoPayment />
+                        )
+                        }</>}
                 </div>
             )}
 
