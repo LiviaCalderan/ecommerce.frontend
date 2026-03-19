@@ -8,6 +8,7 @@ import { FiArrowRight } from "react-icons/fi";
 import Loader from '../shared/Loader';
 import { SiNike, SiSony, SiAdidas, SiSamsung, SiZara } from "react-icons/si";
 import { TbBrandAppleFilled } from "react-icons/tb";
+import { BiSolidError } from "react-icons/bi";
 
 const Home = () => {
     const dispatch = useDispatch();

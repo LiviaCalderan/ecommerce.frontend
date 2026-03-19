@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import Skeleton from '@mui/material/Skeleton';
 import ErrorPage from '../shared/ErrorPage';
 import PaymentMethod from './steps/paymentMethod/PaymentMethod';
+import OrderSummary from './steps/order/OrderSummary';
 
 
 const Checkout = () => {
@@ -37,10 +38,17 @@ const Checkout = () => {
             toast.error("Please, select a payment method before proceeding.")
             return;
         }
+
         setActiveStep((prevStep) => prevStep + 1);
     }
 
-    const paymentMethod = false;
+    const { paymentMethod } = useSelector(
+        (state) => state.payment
+    )
+
+    const { cart } = useSelector(
+        (state) => state.carts
+    )
 
     const steps = [
         // { id: 1, label: "Info" },
@@ -73,6 +81,11 @@ const Checkout = () => {
                 <div className='mt-10'>
                     {activeStep === 0 && <AddressInfo address={address} />}
                     {activeStep === 1 && <PaymentMethod />}
+                    {activeStep === 2 && <OrderSummary
+                        totalPrice={cart?.totalPrice}
+                        cart={cart}
+                        address={selectedUserCheckoutAddress}
+                        paymentMethod={paymentMethod} />}
                 </div>
             )}
 
@@ -111,7 +124,7 @@ const Checkout = () => {
 
             </div>
 
-            {errorMessage && <ErrorPage message={errorMessage}/>}
+            {errorMessage && <ErrorPage message={errorMessage} />}
 
         </div>
     )
