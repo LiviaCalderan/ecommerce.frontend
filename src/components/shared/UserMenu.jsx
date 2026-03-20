@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import BackDrop from './BackDrop';
 import { logOutUser } from '../../store/actions';
+import { AiFillControl } from 'react-icons/ai';
 
 const UserMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -13,6 +14,7 @@ const UserMenu = () => {
     const open = Boolean(anchorEl);
 
     const { user } = useSelector((state) => state.auth);
+    const isAdmin = user && user?.roles?.includes("ROLE_ADMIN");
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -87,6 +89,18 @@ const UserMenu = () => {
                         </span>
                     </MenuItem>
                 </Link>
+                
+                {isAdmin && (
+                    <Link to={"/admin"}>
+                        <MenuItem onClick={handleClose} className='flex gap-2'>
+                            <AiFillControl className='text-xl' />
+                            <span className='font-semibold font-raleway text-[16px] m-1'>
+                                Dashboard
+                            </span>
+                        </MenuItem>
+                    </Link>
+                )}
+
 
                 <Divider />
 

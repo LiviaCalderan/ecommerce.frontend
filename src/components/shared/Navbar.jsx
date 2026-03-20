@@ -5,6 +5,7 @@ import { Badge } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import UserMenu from '../shared/UserMenu';
 import { fetchCart, logOutUser } from '../../store/actions';
+import { AiFillControl } from 'react-icons/ai';
 
 const Navbar = () => {
     const path = useLocation().pathname;
@@ -12,6 +13,7 @@ const Navbar = () => {
     const { cart } = useSelector((state) => state.carts);
 
     const { user } = useSelector((state) => state.auth);
+    const isAdmin = user && user?.roles?.includes("ROLE_ADMIN");
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -139,6 +141,7 @@ const Navbar = () => {
 
                 <nav className='flex flex-col px-4 pt-4 gap-1 flex-1'>
                     {navLinks.map(({ to, label, icon, activePath }) => (
+
                         <Link
                             key={label}
                             to={to}
@@ -151,6 +154,7 @@ const Navbar = () => {
                             {icon}
                             {label}
                         </Link>
+
                     ))}
 
 
@@ -167,6 +171,21 @@ const Navbar = () => {
                         </div>
                         Orders
                     </Link>
+                    {isAdmin && (
+                        <Link
+                            to={"/admin"}
+                            onClick={() => setNavbarOpen(false)}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-raleway text-[15px] font-semibold transition-all duration-150 ${path === "/admin"
+                                ? 'bg-black text-white'
+                                : 'text-slate-600 hover:bg-gray-100 hover:text-black'
+                                }`}
+                        >
+                            <div className='relative'>
+                                <AiFillControl size={18} />
+                            </div>
+                            Dashboard
+                        </Link>
+                    )}
                 </nav>
 
 
