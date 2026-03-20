@@ -304,7 +304,7 @@ export const stripePaymentConfirmation = (sendData, setErrorMessage, setLoading,
 
         try {
 
-            const { data } = await api.post("/order/user/payments/online",  sendData )
+            const { data } = await api.post("/order/user/payments/online", sendData)
             if (data) {
                 localStorage.removeItem("client-secret")
                 dispatch({
@@ -325,5 +325,28 @@ export const stripePaymentConfirmation = (sendData, setErrorMessage, setLoading,
 
 
     }
+
+export const analyticsAction = () => async (dispatch, getState) => {
+
+    try {
+        dispatch({ type: "IS_FETCHING" });
+        const { data } = await api.get(`/admin/app/analytics`)
+        dispatch({
+            type: "FETCHING_ANALYTICS",
+            payload: data
+        })
+        dispatch({
+            type: "IS_SUCCESS"
+        });
+
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: "IS_ERROR",
+            payload: error?.response?.data?.message || "Failed to fetch analytics data."
+        });
+    }
+
+}
 
 
