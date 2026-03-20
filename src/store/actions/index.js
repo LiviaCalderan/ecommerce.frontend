@@ -272,16 +272,13 @@ export const selectedPaymentMethod = (method) => {
     }
 }
 
-export const createStripePaymentSecret = (totalPrice) =>
+export const createStripePaymentSecret = (sendData) =>
     async (dispatch, getState) => {
 
         try {
             dispatch({ type: "IS_FETCHING" });
 
-            const { data } = await api.post("/order/stripe-client-secret", {
-                "amount": Number(totalPrice) * 100,
-                "currency": "brl"
-            })
+            const { data } = await api.post("/order/stripe-client-secret", sendData)
 
             dispatch({
                 type: "CLIENT_SECRET",
