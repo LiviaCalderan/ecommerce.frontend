@@ -120,7 +120,7 @@ const Navbar = () => {
             />
 
             {/* FLY MENU */}
-            <div className={`md:hidden fixed top-0 left-0 h-full w-[75%] max-w-[300px] bg-white z-50 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${navbarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            <div className={`md:hidden fixed top-0 left-0 h-full w-[75%] max-w-[300px] bg-white z-80 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${navbarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
 
                 <div className='flex items-center justify-between px-5 h-[64px] border-b border-gray-100'>
                     <Link to={"/"} onClick={() => setNavbarOpen(false)} className='flex items-center gap-2'>

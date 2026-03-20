@@ -14,6 +14,7 @@ import PrivateRoute from './components/shared/PrivateRoute'
 import Profile from './components/auth/Profile'
 import Checkout from './components/checkout/Checkout'
 import PaymentConfirmation from './components/checkout/steps/payment/PaymentConfirmation'
+import AdminLayout from './components/admin/AdminLayout'
 
 function App() {
 
@@ -38,6 +39,10 @@ function App() {
           <Route path='/' element={<PrivateRoute publicPage />}>
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<SignUp />} />
+          </Route>
+
+          <Route path='/' element={<PrivateRoute />}>
+            <Route path='/admin' element={<AdminLayout />} />
           </Route>
 
         </Routes>

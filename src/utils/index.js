@@ -1,4 +1,8 @@
 import { bannerImageOne, bannerImageThree, bannerImageTwo, bannerImageFour } from "./constant";
+import { AiFillDashboard } from "react-icons/ai";
+import { FaBoxOpen } from "react-icons/fa";
+import { FaThList, FaStore } from "react-icons/fa";
+
 
 export const bannerList = [
     {
@@ -29,4 +33,11 @@ export const bannerList = [
         subtitle: "A world of stories in your hands.",
         description: "From inspiring stories to powerful knowledge, discover books that expand your mind and transform the way you see the world.",
     }
+]
+
+export const adminNavigation = [
+    { to: "/admin", label: "Dashboard", icon: AiFillDashboard, current: true },
+    { to: "/admin/products", label: "Products", icon: FaBoxOpen },
+    { to: "/admin/categories", label: "Categories", icon: FaThList },
+    { to: "/admin/sellers", label: "Sellers", icon: FaStore }
 ]
