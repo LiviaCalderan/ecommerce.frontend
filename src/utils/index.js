@@ -2,6 +2,7 @@ import { bannerImageOne, bannerImageThree, bannerImageTwo, bannerImageFour } fro
 import { AiFillDashboard } from "react-icons/ai";
 import { FaBoxOpen } from "react-icons/fa";
 import { FaThList, FaStore } from "react-icons/fa";
+import { FaCashRegister } from "react-icons/fa6";
 
 
 export const bannerList = [
@@ -39,5 +40,6 @@ export const adminNavigation = [
     { to: "/admin", label: "Dashboard", icon: AiFillDashboard, current: true },
     { to: "/admin/products", label: "Products", icon: FaBoxOpen },
     { to: "/admin/categories", label: "Categories", icon: FaThList },
-    { to: "/admin/sellers", label: "Sellers", icon: FaStore }
+    { to: "/admin/sellers", label: "Sellers", icon: FaStore },
+    { to: "/admin/orders", label: "Orders", icon: FaCashRegister }
 ]

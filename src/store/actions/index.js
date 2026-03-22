@@ -349,4 +349,52 @@ export const analyticsAction = () => async (dispatch, getState) => {
 
 }
 
+export const getDashboardOrders = (queryString) => async (dispatch) => {
+
+    try {
+        dispatch({
+            type: "IS_FETCHING"
+        });
+
+        const { data } = await api.get(`/admin/orders?${queryString}`)
+        dispatch({
+            type: "FETCHING_DASHBOARD_ORDERS",
+            payload: data.content,
+            pageNumber: data.pageNumber,
+            pageSize: data.pageSize,
+            totalElements: data.totalElements,
+            totalPages: data.totalPages,
+            lastPage: data.lastPage,
+        });
+        dispatch({
+            type: "IS_SUCCESS"
+        });
+
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: "IS_ERROR",
+            payload: error?.response?.data?.message || "Failed to fetch orders."
+        });
+    }
+
+}
+
+export const updateOrderStatusFromDashboard = (orderId, orderStatus, toast, setLoader) => async (dispatch) => {
+
+    try {
+        setLoader(true)
+        const { data } = await api.put(`/admin/orders/${orderId}/status`, { orderStatus: orderStatus })
+        toast.success(data.message || "Order updated successfully.")
+        await dispatch(getDashboardOrders());
+
+    } catch (error) {
+        console.log(error);
+        toast.error(error?.response?.data?.message || "Internal Server Error.")
+    } finally {
+        setLoader(false)
+    }
+}
+
+
 
