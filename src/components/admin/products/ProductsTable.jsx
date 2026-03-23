@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DeleteModel } from '../../shared/DeleteModel';
 import { deleteProduct } from '../../../store/actions';
 import toast from 'react-hot-toast';
+import ImageUploadForm from './ImageUploadForm';
 
 const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddModel }) => {
 
@@ -20,6 +21,7 @@ const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddMo
     const [selectedItem, setSelectedItem] = useState("");
     const [updateOpenModel, setUpdateOpenModel] = useState(false);
     const [openDeleteModel, setOpenDeleteModel] = useState(false);
+    const [openUploadImageModel, setOpenUploadImageModel] = useState(false);
     const [loader, setLoader] = useState(false);
 
     const [searchParams] = useSearchParams();
@@ -58,6 +60,7 @@ const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddMo
 
     const handleImageUpload = (product) => {
         setSelectedItem(product);
+        setOpenUploadImageModel(true);
     }
 
     const handleProductView = (product) => {
@@ -115,6 +118,18 @@ const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddMo
                     update={updateOpenModel}
                     loader={loader}
                     setLoader={setLoader}
+                    selectedId={selectedItem.id}
+                    selectedItem={selectedItem}
+                />
+            </Model>
+
+            <Model
+                open={openUploadImageModel}
+                setOpen={setOpenUploadImageModel}
+                title="Add Product Image"
+            >
+                <ImageUploadForm
+                    setOpen={openUploadImageModel}
                     selectedId={selectedItem.id}
                     selectedItem={selectedItem}
                 />

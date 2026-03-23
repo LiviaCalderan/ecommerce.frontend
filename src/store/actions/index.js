@@ -451,7 +451,7 @@ export const deleteProduct =
             dispatch({ type: "IS_SUCCESS" })
             setLoader(false)
             toast.success("Product deleted successfully!");
-            await dispatch(dashboardProductsAction);
+            await dispatch(dashboardProductsAction());
         } catch (error) {
             console.log(error);
             toast.error(error?.response?.data?.message || "Product Delete Failed.")
@@ -459,3 +459,19 @@ export const deleteProduct =
             setOpenDeleteModal(false);
         }
     }
+
+export const updateProductImageDashboard = (formData, productId, toast, setLoader, setOpen) => async (dispatch) => {
+
+    try {
+        setLoader(true)
+        const { data } = await api.put(`/admin/products/${productId}/image`, formData)
+        toast.success(data.message || "Product Image updated successfully.")
+        await dispatch(dashboardProductsAction());
+
+    } catch (error) {
+        console.log(error);
+        toast.error(error?.response?.data?.message || "Product Image upload failed.")
+    } finally {
+        setLoader(false)
+    }
+}
