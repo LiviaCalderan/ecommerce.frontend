@@ -396,5 +396,52 @@ export const updateOrderStatusFromDashboard = (orderId, orderStatus, toast, setL
     }
 }
 
+export const dashboardProductsAction = (queryString) => async (dispatch) => {
+    try {
+        dispatch({
+            type: "IS_FETCHING"
+        });
+
+        const { data } = await api.get(`/admin/products?${queryString}`)
+        dispatch({
+            type: "FETCH_PRODUCTS",
+            payload: data.content,
+            pageNumber: data.pageNumber,
+            pageSize: data.pageSize,
+            totalElements: data.totalElements,
+            totalPages: data.totalPages,
+            lastPage: data.lastPage,
+        });
+
+        dispatch({
+            type: "IS_SUCCESS"
+        });
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: "IS_ERROR",
+            payload: error?.response?.data?.message || "Failed to fetch products for dashboard",
+        });
+    }
+}
+
+export const updateProductInfoFromDashboard = (productId, sendData, reset, toast, setLoader, setOpen) => async (dispatch) => {
+
+    try {
+        setLoader(true)
+        const { data } = await api.put(`/admin/products/${productId}`, sendData)
+        toast.success(data.message || "Product updated successfully.")
+        reset();
+        setLoader(false);
+        await dispatch(dashboardProductsAction())
+
+    } catch (error) {
+        console.log(error);
+        toast.error(error?.response?.data?.message || "Product Update Failed.")
+    } finally {
+        setOpen(false);
+    }
+}
+
 
 

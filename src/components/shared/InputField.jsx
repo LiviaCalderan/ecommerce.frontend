@@ -16,8 +16,8 @@ const InputField = ({
     validation
 }) => {
     return (
-        <div className='flex flex-col gap-1.5'>
-            <label htmlFor="id"
+        <div className='flex flex-col gap-1.5 w-full'>
+            <label htmlFor={id}
                 className={`${className ? className : ""
                     } text-[10px] uppercase tracking-widest font-semibold text-zinc-400`}>
                 {label}
@@ -29,6 +29,7 @@ const InputField = ({
                     type={type}
                     id={id}
                     placeholder={placeholder}
+                    defaultValue={value ?? ""}
                     className={`${className ? className : ""
                         } bg-transparent text-sm text-zinc-900 placeholder:text-zinc-400 outline-none w-full h-full`}
                     {...register(id, {

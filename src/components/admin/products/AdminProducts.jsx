@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { AiFillProduct } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
 import ProductsTable from './ProductsTable';
 import Loader from '../../shared/Loader';
-import useProductFilter from '../../../hooks/useProductFilter';
+import useDashboardProductFilter from '../../../hooks/useDashboardProductFilter';
 
 
 const AdminProducts = () => {
@@ -13,11 +13,14 @@ const AdminProducts = () => {
     (state) => state.errors
   );
 
-  const { products, categories, pagination } = useSelector(
+  const { products, pagination } = useSelector(
     (state => state.products)
   );
+
+  const [openAddModel, setOpenAddModel] = useState(false);
+
   const emptyProducts = !products || products.length === 0;
-  useProductFilter();
+  useDashboardProductFilter();
 
   return (
     <div className='pb-6 font-raleway'>
@@ -28,7 +31,9 @@ const AdminProducts = () => {
           <h1 className='font-anton-sc text-4xl '>
             No Products Placed Yet.
           </h1>
-          <button className='text-white font-semibold py-2 px-15 mt-3 rounded-lg items-center transition-colors duration-300 flex justify-center gap-3 bg-black opacity-100 hover:bg-gray-800 cursor-pointer hover:shadow-sm'>
+          <button
+            onClick={() => setOpenAddModel(true)}
+            className='text-white font-semibold py-2 px-15 mt-3 rounded-lg items-center transition-colors duration-300 flex justify-center gap-3 bg-black opacity-100 hover:bg-gray-800 cursor-pointer hover:shadow-sm'>
             <FaShoppingCart className='text-lg' />
             Add Product
           </button>
@@ -41,12 +46,14 @@ const AdminProducts = () => {
           ) : (
             <div className='relative md:pt-5 flex flex-col gap-5'>
               <div className='md:absolute md:right-0 md:top-0 flex items-center justify-center'>
-                <button className='text-white font-semibold py-2 px-10 mt-3 rounded-lg items-center transition-colors duration-300 flex justify-center gap-3 bg-black opacity-100 hover:bg-gray-800 cursor-pointer hover:shadow-sm'>
+                <button
+                  onClick={() => setOpenAddModel(true)}
+                  className='text-white font-semibold py-2 px-10 mt-3 rounded-lg items-center transition-colors duration-300 flex justify-center gap-3 bg-black opacity-100 hover:bg-gray-800 cursor-pointer hover:shadow-sm'>
                   <FaShoppingCart className='text-lg' />
                   Add Product
                 </button>
               </div>
-              <ProductsTable product={products} pagination={pagination} />
+              <ProductsTable product={products} pagination={pagination} openAddModel={openAddModel} setOpenAddModel={setOpenAddModel}/>
             </div>
           )}
         </>

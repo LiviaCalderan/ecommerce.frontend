@@ -1,89 +1,158 @@
-import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
-import InputLabel from '@mui/material/InputLabel';
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import Spinners from '../../shared/Spinners';
-import TextField from '@mui/material/TextField';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
+import { useForm } from 'react-hook-form';
+import InputField from '../../shared/InputField'
+import toast from 'react-hot-toast';
+import { fetchCategories, updateProductInfoFromDashboard } from '../../../store/actions';
+import SelectTextField from '../../shared/SelectTextField';
+import Skeleton from '@mui/material/Skeleton';
+import ErrorPage from '../../shared/ErrorPage'
 
-const UpdateProductForm = ({ setOpen, open, loader, setLoader, selectedId, selectedItem }) => {
+const UpdateProductForm = ({ setOpen, update = false, loader, setLoader, selectedId, selectedItem }) => {
 
-    const [productInfo, setProductInfo] = useState(selectedItem);
-    const [error, setError] = useState("")
+    const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm({
+        mode: "onTouched"
+    });
+
+    const [selectedCategory, setSelectedCategory] = useState();
+    const { categories } = useSelector((state) => state.products);
+    const { categoryLoader, errorMessage } = useSelector((state) => state.errors);
     const dispatch = useDispatch();
 
-    const updateProductInfo = (e) => {
-        e.preventDefault();
-    }
+    useEffect(() => {
+        if (update && selectedItem) {
+            setValue("productName", selectedItem.productName);
+            setValue("description", selectedItem.description);
+            setValue("price", selectedItem.price);
+            setValue("discount", selectedItem.discount);
+            setValue("stock", selectedItem.stock);
+        }
+    }, [update, selectedItem, setValue]);
 
-    const finalPrice = productInfo.price && productInfo.discount
-        ? (productInfo.price * (1 - productInfo.discount / 100)).toFixed(2)
-        : productInfo.price || "0.00";
+    useEffect(() => {
+        if (!update) {
+            dispatch(fetchCategories());
+        }
+    }, [dispatch, update]);
+
+    useEffect(() => {
+        if (!categoryLoader && categories) {
+            setSelectedCategory(categories[0]);
+        }
+    }, [categories, categoryLoader]);
+
+    if (categoryLoader) return (
+        <div className='pt-3'>
+            <Skeleton variant='rounded' width="100%" height={550} animation="wave" />
+        </div>
+    );
+
+    if (errorMessage) return <ErrorPage message={errorMessage}/>
+
+    const saveProductHandler = (data) => {
+        if (!update) {
+            // new product
+        } else {
+            dispatch(updateProductInfoFromDashboard(selectedId, data, reset, toast, setLoader, setOpen))
+        }
+
+    }
+    watch
+    const price = watch("price");
+    const discount = watch("discount");
+    const finalPrice = price && discount
+        ? (price * (1 - discount / 100)).toFixed(2)
+        : price || "0.00";
 
 
     return (
-        <div className='py-10 relative h-full'>
-            <form onSubmit={updateProductInfo} className='space-y-4'>
-                <FormControl fullWidth variant='outlined' error={!!error} className='flex flex-col gap-5'>
-                    <TextField
+        <div className='py-5 relative h-full'>
+            <form onSubmit={handleSubmit(saveProductHandler)} className='space-y-4'>
+                <div className='flex md:flex-row flex-col gap-4 w-full'>
+                    <InputField
                         id="productName"
+                        required
                         label="Product Name"
-                        value={productInfo.productName}
-                        variant="outlined" />
-
-                    <TextField
-                        id="description"
-                        label="Description"
-                        multiline
-                        rows={4}
-                        value={productInfo.description}
+                        type="text"
+                        message="This field is required"
+                        register={register}
+                        errors={errors}
+                        placeholder="Yellow Notebook"
                     />
+                </div>
 
-                    <div className='flex md:flex-row flex-col md:justify-between gap-5'>
-                        <TextField
-                            fullWidth
-                            label="Price"
-                            id="price"
-                            value={productInfo.price}
-                            onChange={(e) => setProductInfo({ ...productInfo, price: Number(e.target.value) })}
-                            slotProps={{
-                                input: {
-                                    endAdornment: <InputAdornment position="start">R$</InputAdornment>,
-                                },
-                            }}
-                        />
-
-                        <TextField
-                            label="Discount"
-                            id="discount"
-                            value={productInfo.discount}
-                            onChange={(e) => setProductInfo({ ...productInfo, discount: Number(e.target.value) })}
-                            slotProps={{
-                                input: {
-                                    endAdornment: <InputAdornment position="start">%</InputAdornment>,
-                                },
-                            }}
+                {!update && (
+                    <SelectTextField label="Category" selectedObject={selectedCategory} setSelectValue={setSelectedCategory} lists={categories} />
+                )}
+                <div className='flex flex-col gap-1.5 w-full'>
+                    <label
+                        htmlFor="description"
+                        className="text-[10px] uppercase tracking-widest font-semibold text-zinc-400"
+                    >
+                        Description
+                    </label>
+                    <div
+                        className={`flex items-center border rounded-xl px-4 py-3 bg-zinc-50 focus-within:bg-white transition-colors ${errors.description?.message ? "border-red-500" : "border-zinc-200"}`}
+                    >
+                        <textarea
+                            rows={5}
+                            id="description"
+                            placeholder="Add product description..."
+                            className="bg-transparent text-sm text-zinc-900 placeholder:text-zinc-400 outline-none w-full h-full resize-none"
+                            {...register("description", {
+                                required: { value: true, message: "Description is required." },
+                            })}
                         />
                     </div>
-                    <span className='font-bold uppercase font-sans text-sm text-center text-black/40'>This product will cost: R$ {finalPrice}</span>
+                    {errors.description?.message && (
+                        <p className='text-[12px] font-semibold text-red-600 mt-0'>
+                            {errors.description?.message}
+                        </p>
+                    )}
+                </div>
 
-
-                    <TextField
-                        label="Stock"
-                        id="stock"
-                        value={productInfo.stock}
-                        slotProps={{
-                            input: {
-                                endAdornment: <InputAdornment position="start">Units</InputAdornment>,
-                            },
-                        }}
+                <div className='flex md:flex-row flex-col gap-4 w-full'>
+                    <InputField
+                        id="price"
+                        required
+                        label="Price"
+                        type="number"
+                        message="This field is required"
+                        register={register}
+                        errors={errors}
+                        placeholder="R$ 10.00"
                     />
+                    <InputField
+                        id="discount"
+                        required
+                        label="Discount"
+                        type="number"
+                        message="This field is required"
+                        register={register}
+                        errors={errors}
+                        placeholder="5 (%)"
+                    />
+                </div>
 
+                <div className='flex md:flex-row flex-col gap-4 w-full'>
+                    <span className='font-bold uppercase font-sans text-sm text-center text-black/40'>
+                        This product will cost: R$ {finalPrice}
+                    </span>
+                </div>
 
-                    {error && <FormHelperText>{error}</FormHelperText>}
-                </FormControl>
+                <div className='flex md:flex-row flex-col gap-4 w-full'>
+                    <InputField
+                        id="stock"
+                        required
+                        label="Stock"
+                        type="number"
+                        message="This field is required"
+                        register={register}
+                        errors={errors}
+                        placeholder="100 units"
+                    />
+                </div>
 
                 <div className='flex w-full justify-between items-center absolute bottom-14'>
                     <button

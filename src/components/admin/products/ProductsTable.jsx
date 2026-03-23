@@ -4,8 +4,9 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Model } from '../../shared/Model';
 import { DataGrid } from '@mui/x-data-grid';
 import { adminProductsTableColumn } from '../../helper/tableColumn';
+import { useSelector } from 'react-redux';
 
-const ProductsTable = ({product, pagination}) => {
+const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddModel }) => {
 
     const [currentPage, setCurrentPage] = useState(
         pagination?.pageNumber + 1 || 1
@@ -43,17 +44,17 @@ const ProductsTable = ({product, pagination}) => {
         setSelectedItem(product);
         setUpdateOpenModel(true);
     }
-    
+
     const handleDelete = (product) => {
-        
+        setSelectedItem(product);
     }
 
     const handleImageUpload = (product) => {
-        
+        setSelectedItem(product);
     }
 
     const handleProductView = (product) => {
-        
+        setSelectedItem(product);
     }
 
     return (
@@ -89,13 +90,13 @@ const ProductsTable = ({product, pagination}) => {
             </div>
 
             <Model
-                open={updateOpenModel}
-                setOpen={setUpdateOpenModel}
-                title='Update Product Information'
+                open={updateOpenModel || openAddModel}
+                setOpen={updateOpenModel ? setUpdateOpenModel : setOpenAddModel}
+                title={updateOpenModel ? "Update Product Info" : "Add a New Product"}
             >
                 <UpdateProductForm
-                    setOpen={setUpdateOpenModel}
-                    open={updateOpenModel}
+                    setOpen={updateOpenModel ? setUpdateOpenModel : setOpenAddModel}
+                    update={updateOpenModel}
                     loader={loader}
                     setLoader={setLoader}
                     selectedId={selectedItem.id}
