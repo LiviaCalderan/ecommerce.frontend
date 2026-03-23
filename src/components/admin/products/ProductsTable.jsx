@@ -4,7 +4,10 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Model } from '../../shared/Model';
 import { DataGrid } from '@mui/x-data-grid';
 import { adminProductsTableColumn } from '../../helper/tableColumn';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { DeleteModel } from '../../shared/DeleteModel';
+import { deleteProduct } from '../../../store/actions';
+import toast from 'react-hot-toast';
 
 const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddModel }) => {
 
@@ -12,8 +15,11 @@ const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddMo
         pagination?.pageNumber + 1 || 1
     )
 
+    const dispatch = useDispatch();
+
     const [selectedItem, setSelectedItem] = useState("");
     const [updateOpenModel, setUpdateOpenModel] = useState(false);
+    const [openDeleteModel, setOpenDeleteModel] = useState(false);
     const [loader, setLoader] = useState(false);
 
     const [searchParams] = useSearchParams();
@@ -47,6 +53,7 @@ const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddMo
 
     const handleDelete = (product) => {
         setSelectedItem(product);
+        setOpenDeleteModel(true);
     }
 
     const handleImageUpload = (product) => {
@@ -55,6 +62,15 @@ const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddMo
 
     const handleProductView = (product) => {
         setSelectedItem(product);
+    }
+
+    const onDeleteHandler = () => {
+        const productId = selectedItem?.id;
+        if (!productId) {
+            toast.error("Product ID not found.");
+            return;
+        }
+        dispatch(deleteProduct(setLoader, productId, toast, setOpenDeleteModel));
     }
 
     return (
@@ -103,6 +119,12 @@ const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddMo
                     selectedItem={selectedItem}
                 />
             </Model>
+
+            <DeleteModel
+                open={openDeleteModel}
+                setOpen={setOpenDeleteModel}
+                title='Delete Product'
+                onDeleteHandler={onDeleteHandler}/>
         </div>
     )
 }
