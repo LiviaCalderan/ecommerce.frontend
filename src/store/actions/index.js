@@ -550,3 +550,54 @@ export const updateProductImageDashboard = (formData, productId, toast, setLoade
         setLoader(false)
     }
 }
+
+export const getAllSellerDashboard = (queryString) => async (dispatch, getState) => {
+
+    const { user } = getState().auth;
+    try {
+        dispatch({
+            type: "IS_FETCHING"
+        });
+
+        const { data } = await api.get(`/auth/sellers?${queryString}`)
+        dispatch({
+            type: "GET_SELLERS",
+            payload: data.content,
+            pageNumber: data.pageNumber,
+            pageSize: data.pageSize,
+            totalElements: data.totalElements,
+            totalPages: data.totalPages,
+            lastPage: data.lastPage,
+        });
+        dispatch({
+            type: "IS_SUCCESS"
+        });
+
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: "IS_ERROR",
+            payload: error?.response?.data?.message || "Failed to fetch sellers."
+        });
+    }
+
+}
+
+export const addNewSeller = (sendData, reset, toast, setLoader, setOpen) => async (dispatch) => {
+
+    try {
+        setLoader(true)
+        const { data } = await api.post("/auth/signup", sendData);
+        reset()
+        toast.success(data?.message || "Registered Successfully");
+        await dispatch(getAllSellerDashboard())
+    } catch (error) {
+        console.log(error);
+        const message = error?.response?.data?.message || "Seller create failed."
+        toast.error(message)
+        dispatch({ type: "IS_ERROR", payload: message })
+    } finally {
+        setLoader(false)
+        setOpen(false);
+    }
+}

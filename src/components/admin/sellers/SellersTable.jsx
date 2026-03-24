@@ -1,20 +1,17 @@
-import React, { useState } from 'react'
+import { Model } from '@/components/shared/Model';
 import { DataGrid } from '@mui/x-data-grid';
-import { FaEdit } from "react-icons/fa";
-import { adminOrderTableColumn } from '../../helper/tableColumn';
-import { current } from '@reduxjs/toolkit';
+import React, { useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { Model } from '../../shared/Model';
-import UpdateOrderForm from './UpdateOrderForm';
+import AddSellerForm from './AddSellerForm';
+import { DeleteModel } from '@/components/shared/DeleteModel';
+import { useDispatch } from 'react-redux';
+import { adminSellerTableColumn } from '@/components/helper/tableColumn';
 
-const OrderTable = ({ adminOrder, pagination }) => {
+const SellersTable = ({ sellers, pagination, openAddModel = false, setOpenAddModel }) => {
 
     const [currentPage, setCurrentPage] = useState(
         pagination?.pageNumber + 1 || 1
     )
-
-    const [selectedItem, setSelectedItem] = useState("");
-    const [updateOpenModel, setUpdateOpenModel] = useState(false);
     const [loader, setLoader] = useState(false);
 
     const [searchParams] = useSearchParams();
@@ -22,13 +19,11 @@ const OrderTable = ({ adminOrder, pagination }) => {
     const navigate = useNavigate();
     const pathname = useLocation().pathname;
 
-    const tableRecord = adminOrder?.map((item) => {
+    const tableRecord = sellers?.map((item) => {
         return {
-            id: item.orderId,
+            id: item.userId,
+            username: item.username,
             email: item.email,
-            totalAmount: item.totalAmount,
-            status: item.orderStatus,
-            orderDate: item.orderDate
         }
     })
 
@@ -39,21 +34,16 @@ const OrderTable = ({ adminOrder, pagination }) => {
         navigate(`${pathname}?${params}`);
     }
 
-    const handleEdit = (order) => {
-        setSelectedItem(order);
-        setUpdateOpenModel(true);
-    }
-
     return (
         <div>
             <h1 className='font-anton-sc text-black text-2xl text-center pb-6 uppercase'>
-                All Orders
+                All Sellers
             </h1>
             <div className='max-w-fit mx-auto'>
                 <DataGrid
-                    className='w-full'
+                    className="w-full"
                     rows={tableRecord}
-                    columns={adminOrderTableColumn(handleEdit)}
+                    columns={adminSellerTableColumn()}
                     paginationMode='server'
                     rowCount={pagination?.totalElements || 0}
                     initialState={{
@@ -78,21 +68,19 @@ const OrderTable = ({ adminOrder, pagination }) => {
             </div>
 
             <Model
-                open={updateOpenModel}
-                setOpen={setUpdateOpenModel}
-                title='Update Order Status'
+                open={openAddModel}
+                setOpen={setOpenAddModel}
+                title="New Seller"
             >
-                <UpdateOrderForm
-                    setOpen={setUpdateOpenModel}
-                    open={updateOpenModel}
+                <AddSellerForm
+                    setOpen={setOpenAddModel}
                     loader={loader}
                     setLoader={setLoader}
-                    selectedId={selectedItem.id}
-                    selectedItem={selectedItem}
                 />
             </Model>
+
         </div>
     )
 }
 
-export default OrderTable
+export default SellersTable

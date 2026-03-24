@@ -65,8 +65,9 @@ const CategoryTable = ({ categories, pagination, openAddModel = false, setOpenAd
             <h1 className='font-anton-sc text-black text-2xl text-center pb-6 uppercase'>
                 All Categories
             </h1>
-            <div>
+            <div className='max-w-fit mx-auto'>
                 <DataGrid
+                    className='w-full'
                     rows={tableRecord}
                     columns={adminCategoryTableColumn(handleEdit, handleDelete)}
                     paginationMode='server'
