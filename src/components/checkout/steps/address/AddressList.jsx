@@ -31,9 +31,7 @@ const AddressList = ({ addresses, setSelectedAddress, setOpenAddressModel, setOp
         <div className="min-h-screen bg-white flex flex-col items-center">
 
             <div className="w-full max-w-3xl mb-8 flex flex-col items-start gap-1">
-                <span className="text-xs font-bold tracking-[0.3em] uppercase text-gray-500">
-                    Checkout
-                </span>
+
                 <h1 className="text-4xl font-black font-anton-sc tracking-wider text-black leading-none">
                     Delivery Address
                 </h1>
