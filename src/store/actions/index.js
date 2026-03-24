@@ -443,6 +443,81 @@ export const updateProductInfoFromDashboard = (productId, sendData, reset, toast
     }
 }
 
+export const addNewProductFromDashboard = (sendData, reset, toast, setLoader, setOpen) => async (dispatch, getState) => {
+
+    try {
+        setLoader(true)
+        const { data } = await api.post(`admin/categories/${sendData.categoryId}/product`, sendData)
+        toast.success(data.message || "Product created successfully.")
+        reset();
+        setLoader(false);
+        await dispatch(dashboardProductsAction())
+
+    } catch (error) {
+        console.log(error);
+        toast.error(error?.response?.data?.message || "Product Update Failed.")
+    } finally {
+        setOpen(false);
+    }
+}
+
+export const addNewCategoryFromDashboard = (sendData, reset, toast, setLoader, setOpen) => async (dispatch) => {
+
+    try {
+        setLoader(true)
+        const { data } = await api.post(`/admin/categories`, sendData)
+        toast.success(data.message || "Category created successfully.")
+        reset();
+        await dispatch(fetchCategories());
+        dispatch({ type: "IS_SUCCESS" })
+    } catch (error) {
+        console.log(error);
+        const message = error?.response?.data?.message || "Category create failed."
+        toast.error(message)
+        dispatch({ type: "IS_ERROR", payload: message })
+    } finally {
+        setLoader(false)
+        setOpen(false);
+    }
+}
+
+export const updateCategoryFromDashboard = (categoryId, sendData, reset, toast, setLoader, setOpen) => async (dispatch) => {
+
+    try {
+        setLoader(true)
+        const { data } = await api.put(`/admin/categories/${categoryId}`, sendData)
+        toast.success(data.message || "Category updated successfully.")
+        reset();
+        await dispatch(fetchCategories());
+        dispatch({ type: "IS_SUCCESS" })
+    } catch (error) {
+        console.log(error);
+        const message = error?.response?.data?.message || "Category update failed."
+        toast.error(message)
+        dispatch({ type: "IS_ERROR", payload: message })
+    } finally {
+        setLoader(false)
+        setOpen(false);
+    }
+}
+
+export const deleteCategory =
+    (setLoader, categoryId, toast, setOpenDeleteModal) => async (dispatch) => {
+        try {
+            setLoader(true)
+            await api.delete(`/admin/categories/${categoryId}`);
+            dispatch({ type: "IS_SUCCESS" })
+            setLoader(false)
+            toast.success("Product deleted successfully!");
+            await dispatch(fetchCategories());
+        } catch (error) {
+            console.log(error);
+            toast.error(error?.response?.data?.message || "Category Delete Failed.")
+        } finally {
+            setOpenDeleteModal(false);
+        }
+    }
+
 export const deleteProduct =
     (setLoader, productId, toast, setOpenDeleteModal) => async (dispatch, getState) => {
         try {

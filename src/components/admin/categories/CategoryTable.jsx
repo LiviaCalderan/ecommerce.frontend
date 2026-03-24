@@ -1,17 +1,15 @@
-import React, { useState } from 'react'
-import UpdateProductForm from './UpdateProductForm';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { Model } from '../../shared/Model';
-import { DataGrid } from '@mui/x-data-grid';
-import { adminProductsTableColumn } from '../../helper/tableColumn';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteProduct } from '../../../store/actions';
-import ProductViewModel from '../../shared/ProductViewModel'
-import toast from 'react-hot-toast';
-import ImageUploadForm from './ImageUploadForm';
 import { DeleteModel } from '@/components/shared/DeleteModel';
+import { Model } from '@/components/shared/Model';
+import { DataGrid } from '@mui/x-data-grid';
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import UpdateCategoryForm from './UpdateCategoryForm';
+import { adminCategoryTableColumn } from '@/components/helper/tableColumn';
+import { deleteCategory } from '@/store/actions';
+import toast from 'react-hot-toast';
 
-const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddModel }) => {
+const CategoryTable = ({ categories, pagination, openAddModel = false, setOpenAddModel }) => {
 
     const [currentPage, setCurrentPage] = useState(
         pagination?.pageNumber + 1 || 1
@@ -22,8 +20,6 @@ const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddMo
     const [selectedItem, setSelectedItem] = useState("");
     const [updateOpenModel, setUpdateOpenModel] = useState(false);
     const [openDeleteModel, setOpenDeleteModel] = useState(false);
-    const [openProductViewModel, setOpenProductViewModel] = useState(false);
-    const [openUploadImageModel, setOpenUploadImageModel] = useState(false);
     const [loader, setLoader] = useState(false);
 
     const [searchParams] = useSearchParams();
@@ -31,15 +27,10 @@ const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddMo
     const navigate = useNavigate();
     const pathname = useLocation().pathname;
 
-    const tableRecord = product?.map((item) => {
+    const tableRecord = categories?.map((item) => {
         return {
-            id: item.productId,
-            productName: item.productName,
-            description: item.description,
-            image: item.image,
-            price: item.price,
-            stock: item.stock,
-            discount: item.discount
+            id: item.categoryId,
+            categoryName: item.categoryName
         }
     })
 
@@ -50,44 +41,34 @@ const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddMo
         navigate(`${pathname}?${params}`);
     }
 
-    const handleEdit = (product) => {
-        setSelectedItem(product);
+    const handleEdit = (category) => {
+        setSelectedItem(category);
         setUpdateOpenModel(true);
     }
 
-    const handleDelete = (product) => {
-        setSelectedItem(product);
+    const handleDelete = (category) => {
+        setSelectedItem(category);
         setOpenDeleteModel(true);
     }
 
-    const handleImageUpload = (product) => {
-        setSelectedItem(product);
-        setOpenUploadImageModel(true);
-    }
-
-    const handleProductView = (product) => {
-        setSelectedItem(product);
-        setOpenProductViewModel(true);
-    }
-
     const onDeleteHandler = () => {
-        const productId = selectedItem?.id;
-        if (!productId) {
-            toast.error("Product ID not found.");
+        const categoryId = selectedItem?.id;
+        if (!categoryId) {
+            toast.error("Category ID not found.");
             return;
         }
-        dispatch(deleteProduct(setLoader, productId, toast, setOpenDeleteModel));
+        dispatch(deleteCategory(setLoader, categoryId, toast, setOpenDeleteModel));
     }
 
     return (
         <div>
             <h1 className='font-anton-sc text-black text-2xl text-center pb-6 uppercase'>
-                All Products
+                All Categories
             </h1>
             <div>
                 <DataGrid
                     rows={tableRecord}
-                    columns={adminProductsTableColumn(handleEdit, handleDelete, handleImageUpload, handleProductView)}
+                    columns={adminCategoryTableColumn(handleEdit, handleDelete)}
                     paginationMode='server'
                     rowCount={pagination?.totalElements || 0}
                     initialState={{
@@ -114,42 +95,26 @@ const ProductsTable = ({ product, pagination, openAddModel = false, setOpenAddMo
             <Model
                 open={updateOpenModel || openAddModel}
                 setOpen={updateOpenModel ? setUpdateOpenModel : setOpenAddModel}
-                title={updateOpenModel ? "Update Product Info" : "Add a New Product"}
+                title={updateOpenModel ? "Update Category Name" : "Add a New Category"}
             >
-                <UpdateProductForm
+                <UpdateCategoryForm
                     setOpen={updateOpenModel ? setUpdateOpenModel : setOpenAddModel}
                     update={updateOpenModel}
                     loader={loader}
                     setLoader={setLoader}
                     selectedId={selectedItem.id}
                     selectedItem={selectedItem}
-                />
-            </Model>
-
-            <Model
-                open={openUploadImageModel}
-                setOpen={setOpenUploadImageModel}
-                title="Add Product Image"
-            >
-                <ImageUploadForm
-                    setOpen={openUploadImageModel}
-                    selectedId={selectedItem.id}
-                    selectedItem={selectedItem}
+                    categories={categories}
                 />
             </Model>
 
             <DeleteModel
                 open={openDeleteModel}
                 setOpen={setOpenDeleteModel}
-                title='Delete Product'
+                title='Delete Category'
                 onDeleteHandler={onDeleteHandler} />
-
-            <ProductViewModel
-                open={openProductViewModel}
-                setOpen={setOpenProductViewModel}
-                product={selectedItem} />
         </div>
     )
 }
 
-export default ProductsTable
+export default CategoryTable

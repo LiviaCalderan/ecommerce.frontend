@@ -4,7 +4,7 @@ import Spinners from '../../shared/Spinners';
 import { useForm } from 'react-hook-form';
 import InputField from '../../shared/InputField'
 import toast from 'react-hot-toast';
-import { fetchCategories, updateProductInfoFromDashboard } from '../../../store/actions';
+import { addNewProductFromDashboard, fetchCategories, updateProductInfoFromDashboard } from '../../../store/actions';
 import SelectTextField from '../../shared/SelectTextField';
 import Skeleton from '@mui/material/Skeleton';
 import ErrorPage from '../../shared/ErrorPage'
@@ -31,18 +31,19 @@ const UpdateProductForm = ({ setOpen, update = false, loader, setLoader, selecte
     }, [update, selectedItem, setValue]);
 
     useEffect(() => {
-        if (!update) {
+        if (!update && (!categories || categories.length === 0)) {
             dispatch(fetchCategories());
         }
-    }, [dispatch, update]);
+    }, [dispatch, update, categories?.length]);
 
     useEffect(() => {
-        if (!categoryLoader && categories) {
+        if (!categoryLoader && categories?.length) {
             setSelectedCategory(categories[0]);
         }
     }, [categories, categoryLoader]);
 
-    if (categoryLoader) return (
+    const hasCategories = Array.isArray(categories) && categories.length > 0;
+    if (categoryLoader && !hasCategories) return (
         <div className='pt-3'>
             <Skeleton variant='rounded' width="100%" height={550} animation="wave" />
         </div>
@@ -51,8 +52,12 @@ const UpdateProductForm = ({ setOpen, update = false, loader, setLoader, selecte
     if (errorMessage) return <ErrorPage message={errorMessage}/>
 
     const saveProductHandler = (data) => {
+        const sendData = {
+            ...data,
+            categoryId: selectedCategory.categoryId
+        }
         if (!update) {
-            // new product
+            dispatch(addNewProductFromDashboard(sendData, reset, toast, setLoader, setOpen));
         } else {
             dispatch(updateProductInfoFromDashboard(selectedId, data, reset, toast, setLoader, setOpen))
         }
@@ -99,6 +104,7 @@ const UpdateProductForm = ({ setOpen, update = false, loader, setLoader, selecte
                             rows={5}
                             id="description"
                             placeholder="Add product description..."
+                            maxLength={255}
                             className="bg-transparent text-sm text-zinc-900 placeholder:text-zinc-400 outline-none w-full h-full resize-none"
                             {...register("description", {
                                 required: { value: true, message: "Description is required." },
@@ -171,7 +177,7 @@ const UpdateProductForm = ({ setOpen, update = false, loader, setLoader, selecte
                             <div className='flex gap-2 items-center'>
                                 <Spinners />
                             </div>
-                        ) : ("Update")}
+                        ) : ("Save")}
                     </button>
                 </div>
             </form>

@@ -246,3 +246,64 @@ export const adminOrderTableColumn = (handleEdit) => [
             }
         }
     ];
+
+    export const adminCategoryTableColumn = (handleEdit, handleDelete) => [
+        {
+            sortable: false,
+            disableColumnMenu: true,
+            field: "id",
+            headerName: "categoryId",
+            align: 'center',
+            minWidth: 150,
+            headerAlign: 'center',
+            editable: false,
+            headerClassName: 'text-black font-anton-sc tracking-wider',
+            cellClassName: 'text-slate-800 font-anton-sc font-normal',
+            sortable: false,
+            width: 150,
+            renderHeader: (params) => <span className='text-center'>ID</span>
+        },
+        {
+            sortable: false,
+            disableColumnMenu: true,
+            field: "categoryName",
+            headerName: "categoryName",
+            minWidth: 180,
+            headerAlign: 'center',
+            align: 'center',
+            editable: false,
+            headerClassName: 'text-black font-anton-sc tracking-wider',
+            cellClassName: 'text-slate-800 font-raleway font-normal text-center',
+            sortable: false,
+            width: 180,
+            renderHeader: (params) => <span className='text-center'>Name</span>
+        },
+        {
+            sortable: false,
+            disableColumnMenu: true,
+            field: "action",
+            headerName: "Action",
+            minWidth: 180,
+            headerAlign: 'center',
+            editable: false,
+            headerClassName: 'text-black font-anton-sc tracking-wider',
+            cellClassName: 'text-slate-800 font-raleway font-normal',
+            sortable: false,
+            width: 300,
+            renderHeader: (params) => <span className='text-center'>Actions</span>,
+            renderCell: (params) => {
+                return (
+                    <div className='flex justify-center items-center space-x-2 h-full p-1'>
+                        <button onClick={() => handleEdit(params.row)} className='flex items-center font-semibold bg-black text-white px-4 h-9 rounded-md cursor-pointer'>
+                            <FaEdit className='mr-2'/>
+                            Edit
+                        </button>
+                        <button onClick={() => handleDelete(params.row)} className='flex items-center font-semibold bg-red-800 text-white px-4 h-9 rounded-md cursor-pointer'>
+                            <FaTrash className='mr-2'/>
+                            Delete
+                        </button>
+                    </div>
+                )
+            }
+        }
+    ];
