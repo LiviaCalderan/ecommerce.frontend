@@ -13,10 +13,10 @@ const Orders = () => {
     const { adminOrder, pagination } = useSelector(
         (state) => state.order
     )
-    useOrderFilter();
+
 
     const emptyOrder = !adminOrder || adminOrder?.length === 0;
-
+    useOrderFilter();
     return (
         <div className='pb-6'>
             {emptyOrder ? (
@@ -30,7 +30,7 @@ const Orders = () => {
 
 
             ) : (
-                <OrderTable adminOrder={adminOrder} pagination={pagination}/>
+                <OrderTable adminOrder={adminOrder} pagination={pagination} />
             )}
         </div>
     )

@@ -161,7 +161,7 @@ const Navbar = () => {
 
 
                     <Link
-                        to={"/order"}
+                        to={"/profile"}
                         onClick={() => setNavbarOpen(false)}
                         className={`flex items-center gap-3 px-4 py-3 rounded-xl font-raleway text-[15px] font-semibold transition-all duration-150 ${path === "/order"
                             ? 'bg-black text-white'
@@ -171,7 +171,7 @@ const Navbar = () => {
                         <div className='relative'>
                             <FiBox size={18} />
                         </div>
-                        Orders
+                        Profile
                     </Link>
                     {(isAdmin || isSeller) && (
                         <Link

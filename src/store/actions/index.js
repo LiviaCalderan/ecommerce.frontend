@@ -349,14 +349,14 @@ export const analyticsAction = () => async (dispatch, getState) => {
 
 }
 
-export const getDashboardOrders = (queryString) => async (dispatch) => {
+export const getDashboardOrders = (queryString, isAdmin) => async (dispatch) => {
 
     try {
         dispatch({
             type: "IS_FETCHING"
         });
-
-        const { data } = await api.get(`/admin/orders?${queryString}`)
+        const endpoint = isAdmin ? "/admin/orders" : "/seller/orders";
+        const { data } = await api.get(`${endpoint}?${queryString}`)
         dispatch({
             type: "FETCHING_DASHBOARD_ORDERS",
             payload: data.content,
@@ -384,7 +384,7 @@ export const updateOrderStatusFromDashboard = (orderId, orderStatus, toast, setL
 
     try {
         setLoader(true)
-        const { data } = await api.put(`/admin/orders/${orderId}/status`, { orderStatus: orderStatus })
+        const { data } = await api.put(`/seller/orders/${orderId}/status`, { orderStatus: orderStatus })
         toast.success(data.message || "Order updated successfully.")
         await dispatch(getDashboardOrders());
 
@@ -396,13 +396,13 @@ export const updateOrderStatusFromDashboard = (orderId, orderStatus, toast, setL
     }
 }
 
-export const dashboardProductsAction = (queryString) => async (dispatch) => {
+export const dashboardProductsAction = (queryString, isAdmin) => async (dispatch) => {
     try {
         dispatch({
             type: "IS_FETCHING"
         });
-
-        const { data } = await api.get(`/admin/products?${queryString}`)
+        const endpoint = isAdmin ? "/admin/products" : "/seller/products";
+        const { data } = await api.get(`${endpoint}?${queryString}`)
         dispatch({
             type: "FETCH_PRODUCTS",
             payload: data.content,
@@ -429,7 +429,7 @@ export const updateProductInfoFromDashboard = (productId, sendData, reset, toast
 
     try {
         setLoader(true)
-        const { data } = await api.put(`/admin/products/${productId}`, sendData)
+        const { data } = await api.put(`/seller/products/${productId}`, sendData)
         toast.success(data.message || "Product updated successfully.")
         reset();
         setLoader(false);
@@ -447,7 +447,7 @@ export const addNewProductFromDashboard = (sendData, reset, toast, setLoader, se
 
     try {
         setLoader(true)
-        const { data } = await api.post(`admin/categories/${sendData.categoryId}/product`, sendData)
+        const { data } = await api.post(`seller/categories/${sendData.categoryId}/product`, sendData)
         toast.success(data.message || "Product created successfully.")
         reset();
         setLoader(false);
@@ -522,7 +522,7 @@ export const deleteProduct =
     (setLoader, productId, toast, setOpenDeleteModal) => async (dispatch, getState) => {
         try {
             setLoader(true)
-            await api.delete(`/admin/products/${productId}`);
+            await api.delete(`/seller/products/${productId}`);
             dispatch({ type: "IS_SUCCESS" })
             setLoader(false)
             toast.success("Product deleted successfully!");
@@ -539,7 +539,7 @@ export const updateProductImageDashboard = (formData, productId, toast, setLoade
 
     try {
         setLoader(true)
-        const { data } = await api.put(`/admin/products/${productId}/image`, formData)
+        const { data } = await api.put(`/seller/products/${productId}/image`, formData)
         toast.success(data.message || "Product Image updated successfully.")
         await dispatch(dashboardProductsAction());
 
