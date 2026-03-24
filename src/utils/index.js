@@ -1,3 +1,4 @@
+import { current } from "@reduxjs/toolkit";
 import { bannerImageOne, bannerImageThree, bannerImageTwo, bannerImageFour } from "./constant";
 import { AiFillDashboard } from "react-icons/ai";
 import { FaBoxOpen } from "react-icons/fa";
@@ -42,4 +43,9 @@ export const adminNavigation = [
     { to: "/admin/categories", label: "Categories", icon: FaThList },
     { to: "/admin/sellers", label: "Sellers", icon: FaStore },
     { to: "/admin/orders", label: "Orders", icon: FaCashRegister }
+]
+
+export const sellerNavigation = [
+    { to: "/admin/orders", label: "Orders", icon: FaCashRegister,  current: true },
+    { to: "/admin/products", label: "Products", icon: FaBoxOpen }
 ]

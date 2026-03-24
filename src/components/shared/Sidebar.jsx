@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom'
 import { AiFillControl } from "react-icons/ai";
-import { adminNavigation } from '../../utils';
+import { adminNavigation, sellerNavigation } from '../../utils';
 import { AiFillDashboard } from "react-icons/ai";
 import { FaBoxOpen } from "react-icons/fa";
 import { FaThList, FaStore } from "react-icons/fa";
@@ -13,8 +13,9 @@ import { Icon } from '@mui/material';
 const Sidebar = ({ isProfileLayout = false, setSidebarOpen }) => {
     const pathName = useLocation().pathname;
     const { user } = useSelector((state) => state.auth)
+    const isAdmin = user && user?.roles?.includes("ROLE_ADMIN");
 
-    const navLinks = adminNavigation;
+    const navLinks = isAdmin ? adminNavigation : sellerNavigation;
 
     return (
         <div className={`fixed xl:top-16 top-0 left-0 h-full w-[75%] max-w-75 bg-white z-50 shadow-2xl flex grow flex-col transition-transform duration-300 ease-in-out`}>
@@ -22,7 +23,9 @@ const Sidebar = ({ isProfileLayout = false, setSidebarOpen }) => {
             <div className='flex items-center justify-between px-5 h-16 border-b border-gray-100'>
                 <Link to={"/admin"} className='flex items-center gap-2'>
                     <AiFillControl size={20} />
-                    <h1 className='text-xl font-anton-sc'>Admin Panel</h1>
+                    <h1 className='text-xl font-anton-sc'>
+                        {isAdmin ? "Admin Panel" : "Seller Panel"}
+                    </h1>
                 </Link>
                 <button
                     onClick={()=> setSidebarOpen(false)}

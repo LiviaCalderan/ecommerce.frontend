@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import UserMenu from '../shared/UserMenu';
 import { fetchCart, logOutUser } from '../../store/actions';
 import { AiFillControl } from 'react-icons/ai';
+import { FaStore } from 'react-icons/fa';
 
 const Navbar = () => {
     const path = useLocation().pathname;
@@ -14,6 +15,7 @@ const Navbar = () => {
 
     const { user } = useSelector((state) => state.auth);
     const isAdmin = user && user?.roles?.includes("ROLE_ADMIN");
+    const isSeller = user && user?.roles?.includes("ROLE_SELLER");
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -171,9 +173,9 @@ const Navbar = () => {
                         </div>
                         Orders
                     </Link>
-                    {isAdmin && (
+                    {(isAdmin || isSeller) && (
                         <Link
-                            to={"/admin"}
+                            to={isAdmin ? "/admin" : "/admin/orders"}
                             onClick={() => setNavbarOpen(false)}
                             className={`flex items-center gap-3 px-4 py-3 rounded-xl font-raleway text-[15px] font-semibold transition-all duration-150 ${path === "/admin"
                                 ? 'bg-black text-white'
@@ -183,9 +185,11 @@ const Navbar = () => {
                             <div className='relative'>
                                 <AiFillControl size={18} />
                             </div>
-                            Dashboard
+                            {isAdmin ? "Admin Panel" : "Seller Panel"}
                         </Link>
+
                     )}
+                    
                 </nav>
 
 

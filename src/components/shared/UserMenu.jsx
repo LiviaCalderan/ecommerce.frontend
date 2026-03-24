@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import BackDrop from './BackDrop';
 import { logOutUser } from '../../store/actions';
 import { AiFillControl } from 'react-icons/ai';
+import { FaStore } from 'react-icons/fa';
 
 const UserMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -15,6 +16,7 @@ const UserMenu = () => {
 
     const { user } = useSelector((state) => state.auth);
     const isAdmin = user && user?.roles?.includes("ROLE_ADMIN");
+    const isSeller = user && user?.roles?.includes("ROLE_SELLER");
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -90,12 +92,12 @@ const UserMenu = () => {
                     </MenuItem>
                 </Link>
                 
-                {isAdmin && (
-                    <Link to={"/admin"}>
+                {(isAdmin || isSeller) && (
+                    <Link to={isAdmin ? "/admin" : "/admin/orders"}>
                         <MenuItem onClick={handleClose} className='flex gap-2'>
                             <AiFillControl className='text-xl' />
                             <span className='font-semibold font-raleway text-[16px] m-1'>
-                                Dashboard
+                                {isAdmin ? "Admin Panel" : "Seller Panel"}
                             </span>
                         </MenuItem>
                     </Link>
