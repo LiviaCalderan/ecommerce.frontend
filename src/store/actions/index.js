@@ -380,6 +380,36 @@ export const getDashboardOrders = (queryString, isAdmin) => async (dispatch) => 
 
 }
 
+export const getUserOrders = (queryString) => async (dispatch) => {
+
+    try {
+        dispatch({
+            type: "IS_FETCHING"
+        });
+        const { data } = await api.get(`/user/orders?${queryString}`)
+        dispatch({
+            type: "FETCHING_USER_ORDERS",
+            payload: data.content,
+            pageNumber: data.pageNumber,
+            pageSize: data.pageSize,
+            totalElements: data.totalElements,
+            totalPages: data.totalPages,
+            lastPage: data.lastPage,
+        });
+        dispatch({
+            type: "IS_SUCCESS"
+        });
+
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: "IS_ERROR",
+            payload: error?.response?.data?.message || "Failed to fetch orders."
+        });
+    }
+
+}
+
 export const updateOrderStatusFromDashboard = (orderId, orderStatus, toast, setLoader) => async (dispatch) => {
 
     try {

@@ -6,18 +6,28 @@ import AddressList from '../checkout/steps/address/AddressList';
 import AddressInfoModel from '../checkout/steps/address/AddressInfoModel';
 import AddAddressForm from '../checkout/steps/address/AddAddressForm';
 import { DeleteModel } from '../shared/DeleteModel';
-import { deleteUserAddress, getUserAddresses } from '@/store/actions';
+import { deleteUserAddress, getUserAddresses, getUserOrders } from '@/store/actions';
 import toast from 'react-hot-toast';
+import OrderList from './OrderList';
 
 const Profile = () => {
 
   const dispatch = useDispatch();
   const { user, address } = useSelector((state) => state.auth);
+  const { userOrder, pagination } = useSelector(
+    (state) => state.order
+  )
+
+  useEffect(() => {
+    dispatch(getUserOrders());
+  }, [dispatch]);
+
   useEffect(() => {
     dispatch(getUserAddresses());
   }, [dispatch]);
 
   const noAddressExist = !address || address.length === 0;
+  const noOrdersExist = !userOrder || userOrder.length === 0;
   const [openAddressModel, setOpenAddressModel] = useState(false);
   const [openDeleteModel, setOpenDeleteModel] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState("");
@@ -38,23 +48,12 @@ const Profile = () => {
     ))
   }
 
-  const [activeTab, setActiveTab] = useState('enderecos');
+  const [activeTab, setActiveTab] = useState('orders');
 
   const tabs = [
-    { id: 'enderecos', label: 'Endereços' }
+    { id: 'orders', label: 'Orders' },
+    { id: 'addresses', label: 'Adresses' },
   ];
-
-  const orders = [
-    { id: '#00412', date: '18 Mar 2026', status: 'Entregue', total: 'R$ 349,90', items: 2 },
-    { id: '#00398', date: '02 Mar 2026', status: 'Em trânsito', total: 'R$ 189,00', items: 1 },
-    { id: '#00371', date: '11 Fev 2026', status: 'Entregue', total: 'R$ 512,50', items: 3 },
-  ];
-
-  const statusStyle = (status) => {
-    if (status === 'Entregue') return 'bg-black text-white';
-    if (status === 'Em trânsito') return 'bg-white text-black border border-black';
-    return 'bg-gray-100 text-gray-500 border border-gray-200';
-  };
 
   return (
     <div className="min-h-screen bg-white text-black font-sans">
@@ -77,8 +76,8 @@ const Profile = () => {
           <div className="flex items-center gap-6 text-center sm:text-right">
             <div className="w-px h-8 bg-black/10" />
             <div>
-              <p className="text-2xl font-bold">{address?.length}</p>
-              <p className="text-xs text-black/40 uppercase tracking-widest">Endereços</p>
+              <p className="text-2xl font-bold">{userOrder?.length}</p>
+              <p className="text-xs text-black/40 uppercase tracking-widest">Orders</p>
             </div>
           </div>
         </div>
@@ -99,12 +98,49 @@ const Profile = () => {
           ))}
         </div>
 
-        {/* TAB: ENDEREÇOS */}
-        {activeTab === 'enderecos' && (
+        {/* TAB: ORDERS */}
+        {activeTab === 'orders' && (
+          <div className="font-raleway flex flex-col justify-between items-center">
+
+            {noOrdersExist ? (
+              <div className='flex flex-col max-w-md mx-auto items-center justify-center gap-4'>
+                <FaMap size={150} className='text-gray-200' />
+                <h1 className='font-anton-sc text-3xl text-black'>
+                  No Orders Yet
+                </h1>
+              </div>
+
+            ) : (
+              <div className='relative p-6 rounded-lg w-full max-w-3xl mx-auto'>
+                {isLoading ? (
+                  <div className='flex flex-col gap-2 items-center'>
+                    <Skeleton variant='rounded' width="100%" height={135} animation="wave" />
+                    <Skeleton variant='rounded' width="100%" height={135} animation="wave" />
+
+                  </div>
+                ) : (
+                  <div className='relative'>
+
+                    <div className='space-y-4 pt-6'>
+                      <OrderList
+                        order={userOrder}
+                        addresses={address}
+                      />
+                    </div>
+
+
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* TAB: ADRESSES */}
+        {activeTab === 'addresses' && (
           <div className="font-raleway flex flex-col justify-between items-center">
 
             {noAddressExist ? (
-              // TODO: TRANSFORMAR EM UM COMPONENTE REUTILIZÁVEL
               <div className='flex flex-col max-w-md mx-auto items-center justify-center gap-4'>
                 <FaMap size={150} className='text-gray-200' />
                 <h1 className='font-anton-sc text-3xl text-slate-800'>
